@@ -1,0 +1,66 @@
+# ---------- Visual Studio / .NET ----------
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+artifacts/
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+*.nuget.props
+*.nuget.targets
+project.lock.json
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# ---------- Node ----------
+/node_modules/
+
+# ---------- Рантайм-данные приложения ----------
+/Lumiere/App_Data/
+
+# ---------- Локальный рабочий мусор (только в корне репозитория) ----------
+/data/
+/shots/
+/_testimg/
+/src/
+/tools/
+
+# Логи
+*.log
+/_run.err
+/_run.log
+/_srv.err
+/_srv.log
+/server.err.log
+/server.out.log
+/shot.err.log
+/shot.out.log
+
+# Тестовые/временные файлы в корне
+/_test.png
+/_menu.backup.json
+/index_raw.html
+/package.json
+/package-lock.json
+/banner_check.js
+/diag.js
+/diag_menu.js
+/preloader_check.js
+/shot.js
+/verify_banner.js
+
+# ---------- Служебная папка ассистента ----------
+/.workbuddy-ai/

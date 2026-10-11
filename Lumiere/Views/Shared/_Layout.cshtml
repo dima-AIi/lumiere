@@ -1,0 +1,127 @@
+﻿@inject Lumiere.Services.CartService Cart
+@{
+    var menu = ViewBag.Menu as Lumiere.Models.MenuData;
+    var cart = Cart.Get();
+    var current = ViewContext.RouteData.Values["action"]?.ToString();
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(ViewData["Title"] ?? "Lumière — десерты и кофе")</title>
+    <meta name="description" content="Lumière — десерты и кофе в Армавире. Свежая выпечка, европейская кухня, доставка." />
+    <link rel="icon" href="/img/logo.svg" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script>
+        // Приветственный экран — только при первом визите (флаг в localStorage).
+        // Класс на <html> решает, рисовать ли прелоадер, ещё до отрисовки body —
+        // так на обычных переходах (меню, корзина) его не видно вообще, без вспышки.
+        (function () {
+            var force = /[?&]welcome\b/.test(location.search);
+            var seen = false;
+            try { seen = localStorage.getItem('lumiere_welcome') === '1'; }
+            catch (e) { seen = ('; ' + document.cookie).indexOf('; lumiere_welcome=1') > -1; }
+            if (force || !seen) document.documentElement.classList.add('show-welcome');
+        })();
+    </script>
+</head>
+<body>
+    <div class="preloader" id="preloader" aria-hidden="true">
+        <div class="preloader-in">
+            <div class="preloader-welcome">
+                <span class="preloader-title">Добро пожаловать!</span>
+                <p class="preloader-text">Повара уже на низком старте и ждут ваших заказов</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="topbar">
+        <div class="wrap">
+            <span>Ежедневно с @menu?.WorkStart до @menu?.WorkEnd</span>
+            <span>@menu?.Address, @menu?.City</span>
+            <span>@menu?.Phone</span>
+        </div>
+    </div>
+
+    <header class="site">
+        <div class="wrap header-in">
+            <a class="logo" href="/">
+                <img class="logo-mark" src="/img/logo.svg" alt="Lumière" />
+                <span class="logo-text">
+                    <span class="logo-name">Lumière</span>
+                    <span class="logo-sub">DESSERTS &amp; COFFEE</span>
+                </span>
+            </a>
+
+            <button class="burger" id="burger" aria-label="Меню">&#9776;</button>
+
+            <nav class="nav" id="nav">
+                <a href="/">Главная</a>
+                <a href="/Home/Menu">Меню</a>
+                <a href="/Home/Contacts">Контакты</a>
+                <a class="cart-pill" href="/Home/CartPage">
+                    Корзина <span class="cart-count">@cart.Count</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    <footer class="site">
+        <div class="wrap">
+            <div class="foot-grid">
+                <div>
+                    <h4>Lumière</h4>
+                    <p style="max-width:380px;">
+                        Кафе десертов и кофе. Выпечку печём каждое утро, зёрна обжариваем
+                        собственного обжарщика и подаём всё, под чем хочется задержаться подольше.
+                    </p>
+                    <div class="pay-logos">
+                        <span class="pay-logo">МИР</span>
+                        <span class="pay-logo">Visa</span>
+                        <span class="pay-logo">Mastercard</span>
+                        <span class="pay-logo">СБП</span>
+                    </div>
+                </div>
+                <div>
+                    <h4><a href="/Home/Menu">Меню</a></h4>
+                    <ul class="foot-list">
+                        <li><a href="/Home/Menu?q=Кофе">Кофе</a></li>
+                        <li><a href="/Home/Menu?q=Десерты">Десерты</a></li>
+                        <li><a href="/Home/Menu?q=Пицца">Пицца</a></li>
+                        <li><a href="/Home/Menu?q=Салаты">Салаты</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Контакты</h4>
+                    <ul class="foot-list">
+                        <li><a href="tel:@(menu?.Phone)">@menu?.Phone</a></li>
+                        <li><a href="/Home/Contacts">@menu?.Address</a></li>
+                        <li><span>@menu?.WorkStart — @menu?.WorkEnd</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="foot-bottom">
+                <span>© @DateTime.Now.Year Lumière. Учебный проект.</span>
+                <span>
+                    <a href="/Admin">Панель управления</a> ·
+                    <a href="/Home/Privacy">Политика конфиденциальности</a> ·
+                    Оплата через ЮKassa
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const burger = document.getElementById('burger');
+        const nav = document.getElementById('nav');
+        burger?.addEventListener('click', () => nav.classList.toggle('open'));
+    </script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

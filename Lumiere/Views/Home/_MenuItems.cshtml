@@ -1,0 +1,70 @@
+@model List<Lumiere.Models.MenuCategory>
+@*
+    Блок результатов меню. Используется и при обычной загрузке страницы (Menu.cshtml),
+    и при AJAX-поиске (HomeController.Menu с заголовком X-Requested-With).
+    Формы «В корзину» помечены классом add-to-cart — site.js перехватывает их без перезагрузки.
+*@
+@if (Model.Count == 0)
+{
+    <div class="empty">
+        <h3 class="h3">Ничего не нашлось</h3>
+        <p>Попробуйте другое слово — например, «кофе» или «десерт».</p>
+        <a class="btn btn-gold" href="/Home/Menu">Показать всё меню</a>
+    </div>
+}
+else
+{
+    <div class="menu-layout">
+        <nav class="cat-nav">
+            @foreach (var c in Model)
+            {
+                <a href="#cat-@c.Title.Replace(" ", "-")">
+                    <span>@c.Title</span>
+                    <span>@c.Items.Count</span>
+                </a>
+            }
+        </nav>
+
+        <div>
+            @foreach (var c in Model)
+            {
+                <div class="cat-block" id="cat-@c.Title.Replace(" ", "-")">
+                    <div class="cat-title">
+                        <h2>@c.Title</h2>
+                        <span>@c.Items.Count позиций</span>
+                    </div>
+
+                    <div class="grid">
+                        @foreach (var item in c.Items)
+                        {
+                            <article class="card">
+                                <div class="card-photo">
+                                    <img src="@item.ImgUrl" alt="@item.Name" loading="lazy" />
+                                    @if (!string.IsNullOrEmpty(item.WeightText))
+                                    {
+                                        <span class="card-weight">@item.WeightText</span>
+                                    }
+                                </div>
+                                <div class="card-body">
+                                    <h3 class="card-name">@item.Name</h3>
+                                    @if (!string.IsNullOrWhiteSpace(item.Desc))
+                                    {
+                                        <p class="card-desc">@item.Desc</p>
+                                    }
+                                    <div class="card-foot">
+                                        <span class="price">@item.PriceRubles.ToString("0") <small>₽</small></span>
+                                        <form asp-controller="Home" asp-action="AddToCart" method="post" class="add-to-cart">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </article>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(ViewData["Title"] ?? "Панель управления") — Lumière</title>
+    <link rel="icon" href="/img/logo.svg" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="admin-body">
+    <header class="admin-top">
+        <div class="wrap admin-top-in">
+            <a class="admin-brand" href="/Admin/Dashboard">
+                <img class="logo-mark" src="/img/logo.svg" alt="Lumière" />
+                <span class="logo-text">
+                    <span class="logo-name">Lumière</span>
+                    <span class="logo-sub">ПАНЕЛЬ УПРАВЛЕНИЯ</span>
+                </span>
+            </a>
+
+            <nav class="admin-nav">
+                <a href="/Admin/Dashboard" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "on" : "")">Обзор</a>
+                <a href="/Admin/Orders" class="@(new[]{"Orders","OrderDetails"}.Contains(ViewContext.RouteData.Values["action"]?.ToString()) ? "on" : "")">Заказы</a>
+                <a href="/Admin/Menu" class="@(new[]{"Menu","MenuItemCreate","MenuItemEdit"}.Contains(ViewContext.RouteData.Values["action"]?.ToString()) ? "on" : "")">Меню</a>
+                <a href="/" target="_blank" class="admin-site">Витрина</a>
+                <form asp-controller="Admin" asp-action="Logout" method="post" class="inline">
+                    <button class="admin-logout" type="submit">Выйти</button>
+                </form>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        @RenderBody()
+    </main>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

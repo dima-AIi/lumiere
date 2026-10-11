@@ -1,0 +1,25 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Ошибка";
+}
+
+<section>
+    <div class="wrap" style="max-width:560px;text-align:center;">
+        <div class="section-head">
+            <span class="eyebrow">Что-то пошло не так</span>
+            <h1 class="h2">Ошибка @Model.StatusCode</h1>
+            <div class="rule"></div>
+        </div>
+        <p class="muted" style="margin-bottom:2rem;">
+            Не удалось загрузить страницу. Попробуйте вернуться на главную или в меню.
+        </p>
+        @if (Model.ShowRequestId)
+        {
+            <p class="muted" style="font-size:.8rem;">Код запроса: <code>@Model.RequestId</code></p>
+        }
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+            <a class="btn btn-gold" href="/">На главную</a>
+            <a class="btn" href="/Home/Menu">В меню</a>
+        </div>
+    </div>
+</section>

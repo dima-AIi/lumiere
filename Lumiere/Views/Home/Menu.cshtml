@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Меню";
+    var menu = (Lumiere.Models.MenuData)ViewBag.Menu!;
+    var categories = (List<Lumiere.Models.MenuCategory>)ViewBag.Categories!;
+    var query = (string)ViewBag.Query!;
+    var total = (int)ViewBag.ItemCount;
+}
+
+<div class="page-banner">
+    <video src="/video/menu-display.mp4" poster="/video/menu-display.jpg"
+           autoplay muted loop playsinline preload="metadata"
+           aria-label="Кондитер украшает торт кремом — готовим на месте каждый день"></video>
+    <div class="banner-cap">
+        <div class="wrap">
+            <b>Готовим каждый день</b>
+            <span>@total позиций в меню</span>
+        </div>
+    </div>
+</div>
+
+<section>
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">@menu.Tagline</span>
+            <h1 class="h2">Меню</h1>
+            <div class="rule"></div>
+            <p class="muted" style="margin-top:1rem;">@total позиций, готовим на месте каждый день</p>
+        </div>
+
+        <form class="menu-search" id="menu-search" method="get" action="/Home/Menu">
+            <input type="search" name="q" value="@query" placeholder="Поиск по меню: круассан, капучино, пицца…" />
+            <button class="btn btn-solid" type="submit">Найти</button>
+            @if (!string.IsNullOrWhiteSpace(query))
+            {
+                <a class="btn" href="/Home/Menu">Сбросить</a>
+            }
+        </form>
+
+        <div id="menu-results">
+            @await Html.PartialAsync("_MenuItems", categories)
+        </div>
+    </div>
+</section>

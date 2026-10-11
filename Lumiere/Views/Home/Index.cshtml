@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Lumière — десерты и кофе в Армавире";
+    var menu = (Lumiere.Models.MenuData)ViewBag.Menu!;
+    var highlights = (List<Lumiere.Models.MenuItem>)ViewBag.Highlights!;
+    var hero = highlights.FirstOrDefault(i => i.Img.Length > 0);
+    var about = menu.AllItems.ElementAtOrDefault(3);
+    var dessert = menu.Categories.FirstOrDefault(c => c.Title == "Десерты");
+    var coffee = menu.Categories.FirstOrDefault(c => c.Title == "Кофе");
+    var totalItems = menu.AllItems.Count();
+}
+
+<section class="hero">
+    <img class="hero-img" src="@(hero?.ImgUrl ?? "/img/logo.svg")" alt="@hero?.Name" />
+    <video class="hero-video" src="/video/latte-art.mp4" poster="/video/latte-art.jpg"
+           autoplay muted loop playsinline preload="metadata"
+           aria-label="Бариста готовит кофе и рисует латте-арт"></video>
+    <div class="wrap">
+        <div class="hero-in">
+            <span class="eyebrow">DESSERTS &amp; COFFEE · @menu.City</span>
+            <h1 class="display">Тишина вкуса<br />в каждой детали</h1>
+            <p>
+                Небольшое кафе, где выпечку пекут до рассвета, а кофе обжаривают зёрна
+                за неделю до вашего визита. Сюда стоит приходить просто сидеть.
+            </p>
+            <div class="hero-actions">
+                <a class="btn btn-gold" href="/Home/Menu">Смотреть меню</a>
+                <a class="btn" href="/Home/Contacts">Как нас найти</a>
+            </div>
+            <div class="hero-facts">
+                <div class="hero-fact">
+                    <b>@totalItems</b>
+                    <span>позиций в меню</span>
+                </div>
+                <div class="hero-fact">
+                    <b>@menu.WorkStart—@menu.WorkEnd</b>
+                    <span>каждый день</span>
+                </div>
+                <div class="hero-fact">
+                    <b>@((menu.DeliveryPrice / 100).ToString("0")) ₽</b>
+                    <span>доставка от</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="band">
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Философия</span>
+            <h2 class="h2">Готовим так, как учили бабушки</h2>
+            <div class="rule"></div>
+        </div>
+
+        <div class="split">
+            <img src="@(about?.ImgUrl ?? "/img/logo.svg")" alt="@about?.Name" loading="lazy" />
+            <div>
+                <p class="muted">
+                    У нас нет технологий и позиций на двадцать страниц. Есть утренняя смена,
+                    которая печёт круассан из French butter, обжарщик, который каждое утро
+                    настраивает профиль обжарки, и кухня, где всё делается вручную —
+                    от теста до подачи.
+                </p>
+                <ul class="feature-list">
+                    <li>
+                        <span class="dot"></span>
+                        <span>
+                            <b>Выпечка каждый день</b>
+                            <span>Тесто замешивают ночью, выпекают утром — на полках всегда свежее.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="dot"></span>
+                        <span>
+                            <b>Собственное обжаривание</b>
+                            <span>Зёрна подбираем под сезон и обжариваем малыми партиями.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="dot"></span>
+                        <span>
+                            <b>Честный состав</b>
+                            <span>Сливки, масло и шоколад — без суррогатов и разбавителей.</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Витрина</span>
+            <h2 class="h2">Избранное гостей</h2>
+            <div class="rule"></div>
+        </div>
+
+        <div class="grid">
+            @foreach (var item in highlights.Take(6))
+            {
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="@item.ImgUrl" alt="@item.Name" loading="lazy" />
+                        @if (!string.IsNullOrEmpty(item.WeightText))
+                        {
+                            <span class="card-weight">@item.WeightText</span>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">@item.Name</h3>
+                        @if (!string.IsNullOrWhiteSpace(item.Desc))
+                        {
+                            <p class="card-desc">@item.Desc</p>
+                        }
+                        <div class="card-foot">
+                            <span class="price">@item.PriceRubles.ToString("0") <small>₽</small></span>
+                            <form asp-controller="Home" asp-action="AddToCart" method="post" class="add-to-cart">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Id" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            </form>
+                        </div>
+                    </div>
+                </article>
+            }
+        </div>
+
+        <div class="center" style="margin-top:3rem;">
+            <a class="btn" href="/Home/Menu">Всё меню — @totalItems позиций</a>
+        </div>
+    </div>
+</section>
+
+<section class="band-dark">
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Из нашего цеха</span>
+            <h2 class="h2">Сладкое в движении</h2>
+            <div class="rule"></div>
+        </div>
+
+        <div class="video-grid">
+            <figure class="video-card">
+                <video src="/video/cake-cream.mp4" poster="/video/cake-cream.jpg"
+                       autoplay muted loop playsinline preload="metadata"
+                       aria-label="Кондитер наносит крем на торт"></video>
+                <figcaption>
+                    <span>Десерты</span>
+                    <b>Каждый десерт собираем вручную</b>
+                </figcaption>
+            </figure>
+            <figure class="video-card">
+                <video src="/video/whisk-cream.mp4" poster="/video/whisk-cream.jpg"
+                       autoplay muted loop playsinline preload="metadata"
+                       aria-label="Миксер взбивает сливочный крем"></video>
+                <figcaption>
+                    <span>Сливочный крем</span>
+                    <b>Взбиваем перед подачей, без заготовок</b>
+                </figcaption>
+            </figure>
+            <figure class="video-card">
+                <video src="/video/cupcake-cream.mp4" poster="/video/cupcake-cream.jpg"
+                       autoplay muted loop playsinline preload="metadata"
+                       aria-label="Кондитер расписывает купкейки кремом"></video>
+                <figcaption>
+                    <span>Кондитерский цех</span>
+                    <b>Тесто и кремы — с утра до открытия</b>
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</section>
+
+@if (dessert is not null)
+{
+    <section class="band">
+        <div class="wrap">
+            <div class="split">
+                <div>
+                    <span class="eyebrow">Десерты</span>
+                    <h2 class="h2" style="margin:.8rem 0 1rem;">Сладкое, ради чего возвращаются</h2>
+                    <p class="muted" style="margin-bottom:1.8rem;">
+                        Классические French patisserie — тарты с фруктами, шоколадные десерты
+                        и слоёная выпечка из нашего цеха.
+                    </p>
+                    <ul class="foot-list" style="gap:.9rem;">
+                        @foreach (var d in dessert.Items.Take(4))
+                        {
+                            <li style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;">
+                                <span>@d.Name</span>
+                                <span class="price">@d.PriceRubles.ToString("0") ₽</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <img src="@(dessert.Items.FirstOrDefault(d => d.Img.Length > 0)?.ImgUrl ?? "/img/logo.svg")"
+                     alt="@dessert.Title" loading="lazy" />
+            </div>
+        </div>
+    </section>
+}
+

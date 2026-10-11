@@ -1,0 +1,207 @@
+@model Lumiere.Models.CheckoutForm
+@inject Lumiere.Services.CartService Cart
+@{
+    ViewData["Title"] = "Оформление заказа";
+    var cart = Cart.Get();
+    var menu = (Lumiere.Models.MenuData)ViewBag.Menu!;
+}
+
+<section>
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Последний шаг</span>
+            <h1 class="h2">Оформление заказа</h1>
+            <div class="rule"></div>
+        </div>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <div>@error.ErrorMessage</div>
+                }
+            </div>
+        }
+
+        <div class="cart-layout">
+            <form asp-controller="Home" asp-action="Checkout" method="post" autocomplete="off">
+                @Html.AntiForgeryToken()
+
+                <div class="field">
+                    <label asp-for="Name">Имя</label>
+                    <input asp-for="Name" placeholder="Как к вам обращаться" required />
+                </div>
+
+                <div class="field">
+                    <label asp-for="Phone">Телефон</label>
+                    <input asp-for="Phone" type="tel" inputmode="numeric" maxlength="18"
+                           autocomplete="tel" required />
+                    <span class="muted" style="font-size:.74rem;">Скобки и тире проставятся сами — вводите только цифры</span>
+                </div>
+
+                <div class="field">
+                    <label>Способ получения</label>
+                    <div class="delivery-tabs">
+                        <label>
+                            <input type="radio" asp-for="DeliveryType" value="pickup" class="sr-only" />
+                            <span>Самовывоз</span>
+                        </label>
+                        <label>
+                            <input type="radio" asp-for="DeliveryType" value="delivery" class="sr-only" />
+                            <span>Доставка · @((menu.DeliveryPrice / 100).ToString("0")) ₽</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="field" id="addressField">
+                    <label asp-for="Address">Адрес доставки</label>
+                    <input asp-for="Address" placeholder="Улица, дом, квартира" />
+                    <span class="muted" style="font-size:.74rem;">Нужен только при доставке</span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="Comment">Комментарий</label>
+                    <textarea asp-for="Comment" placeholder="Аллергии, пожелания к десерту, этаж…"></textarea>
+                </div>
+
+                <button class="btn btn-solid" type="submit" id="payBtn">
+                    Перейти к оплате — @((cart.Total / 100).ToString("0")) ₽
+                </button>
+            </form>
+
+            <aside class="summary">
+                <h3>Ваш заказ</h3>
+                @foreach (var line in cart.Lines)
+                {
+                    <div class="sum-row">
+                        <span>@line.Name × @line.Qty</span>
+                        <span>@((line.Sum / 100).ToString("0")) ₽</span>
+                    </div>
+                }
+                @if (cart.IsDelivery)
+                {
+                    <div class="sum-row" id="deliveryRow">
+                        <span>Доставка</span>
+                        <span>@((cart.Delivery / 100).ToString("0")) ₽</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="sum-row" id="deliveryRow" hidden>
+                        <span>Доставка</span>
+                        <span>@((menu.DeliveryPrice / 100).ToString("0")) ₽</span>
+                    </div>
+                }
+                <div class="sum-row total">
+                    <span>К оплате</span>
+                    <span id="totalCell">@((cart.Total / 100).ToString("0")) ₽</span>
+                </div>
+
+                <p class="muted" style="font-size:.8rem;margin-top:1.4rem;">
+                    Оплата проходит через защищённую страницу ЮKassa.
+                    Данные карты вводятся на стороне платёжной системы — мы их не видим.
+                </p>
+
+                <div class="pay-logos">
+                    <span class="pay-logo">МИР</span>
+                    <span class="pay-logo">Visa</span>
+                    <span class="pay-logo">Mastercard</span>
+                    <span class="pay-logo">СБП</span>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Итог и адрес подстраиваются под выбранный способ получения,
+        // чтобы сумма на экране совпадала с той, что уйдёт в платёж.
+        (function () {
+            var deliveryPrice = @((menu.DeliveryPrice / 100).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
+            var subtotal = @((cart.Subtotal / 100).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
+            var totalCell = document.getElementById('totalCell');
+            var deliveryRow = document.getElementById('deliveryRow');
+            var addressField = document.getElementById('addressField');
+            var payBtn = document.getElementById('payBtn');
+
+            function rub(v) {
+                return Math.round(v).toLocaleString('ru-RU') + ' ₽';
+            }
+
+            function sync() {
+                var chosen = document.querySelector('input[name="DeliveryType"]:checked');
+                if (!chosen) return; // на случай, если ничего не выбрано — не падаем
+                var isDelivery = chosen.value === 'delivery';
+                var total = subtotal + (isDelivery ? deliveryPrice : 0);
+                deliveryRow.hidden = !isDelivery;
+                addressField.hidden = !isDelivery;
+                totalCell.textContent = rub(total);
+                payBtn.textContent = 'Перейти к оплате — ' + rub(total);
+
+                document.querySelectorAll('.delivery-tabs label').forEach(function (label) {
+                    label.classList.toggle('checked', label.contains(chosen));
+                });
+            }
+
+            document.querySelectorAll('input[name="DeliveryType"]').forEach(function (r) {
+                r.addEventListener('change', sync);
+            });
+            sync();
+        })();
+
+        // ---------- Маска телефона: сама ставит скобки и тире ----------
+        // Вид: 8 (861) 123-45-67. В поле вводятся только цифры (макс. 11),
+        // разделители добавляются автоматически. На сервер уйдут те же цифры.
+        (function () {
+            var phone = document.getElementById('Phone');
+            if (!phone) return;
+
+            function formatPhone(raw) {
+                var d = raw.replace(/\D/g, '').slice(0, 11);
+                if (!d) return '';
+                var lead = d.charAt(0);          // 8 или 7
+                var rest = d.slice(1);           // код (3) + номер (7)
+                var out = lead;
+                if (rest.length === 0) return out;
+                out += ' (' + rest.slice(0, 3);  // открыли скобку кода
+                if (rest.length < 3) return out; // ещё печатаем код
+                out += ')';                       // закрыли код
+                var tail = rest.slice(3);
+                if (tail.length === 0) return out + ' ';
+                out += ' ' + tail.slice(0, 3);   // первые 3 цифры номера
+                if (tail.length < 3) return out;
+                if (tail.length > 3) out += '-' + tail.slice(3, 5);
+                if (tail.length > 5) out += '-' + tail.slice(5, 7);
+                return out;
+            }
+
+            function applyMask() {
+                var before = phone.value;
+                var caret = phone.selectionStart || 0;
+                var digitsBefore = before.slice(0, caret).replace(/\D/g, '').length;
+                var formatted = formatPhone(before);
+                phone.value = formatted;
+                // Курсор — туда, где столько же введённых цифр, как было до него.
+                var pos = formatted.length;
+                if (digitsBefore === 0) {
+                    pos = 0;
+                } else {
+                    var count = 0;
+                    for (var i = 0; i < formatted.length; i++) {
+                        if (/\d/.test(formatted.charAt(i))) {
+                            count++;
+                            if (count === digitsBefore) { pos = i + 1; break; }
+                        }
+                    }
+                }
+                try { phone.setSelectionRange(pos, pos); } catch (e) {}
+            }
+
+            phone.addEventListener('input', applyMask);
+            // Если поле вернулось с ошибкой валидации — нормализуем вид.
+            if (phone.value) applyMask();
+        })();
+    </script>
+}

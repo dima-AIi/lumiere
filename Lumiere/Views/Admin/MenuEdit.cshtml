@@ -1,0 +1,126 @@
+@model Lumiere.Models.AdminMenuItemViewModel
+@{
+    ViewData["Title"] = string.IsNullOrEmpty(Model.Id) ? "Новая позиция" : "Изменить позицию";
+    var isEdit = !string.IsNullOrEmpty(Model.Id);
+}
+
+<div class="admin-page">
+    <div class="section-head">
+        <span class="eyebrow">@(isEdit ? "Редактирование" : "Создание")</span>
+        <h1 class="h2">@(isEdit ? "Изменить позицию" : "Новая позиция")</h1>
+        <div class="rule"></div>
+    </div>
+
+    <a class="link-back" href="/Admin/Menu">← Назад к меню</a>
+
+    <form asp-controller="Admin" asp-action="@(isEdit ? "MenuItemEdit" : "MenuItemCreate")" method="post"
+          enctype="multipart/form-data" class="admin-panel admin-form">
+        @Html.AntiForgeryToken()
+        @if (isEdit)
+        {
+            <input type="hidden" asp-for="Id" />
+        }
+
+        <div asp-validation-summary="ModelOnly" class="admin-errors"></div>
+
+        <div class="admin-edit-grid">
+            @* Название *@
+            <div class="field">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="input" />
+                <span asp-validation-for="Name" class="field-error"></span>
+            </div>
+
+            @* Цена *@
+            <div class="field">
+                <label asp-for="PriceRubles">Цена (₽)</label>
+                <input asp-for="PriceRubles" type="number" step="1" min="1" class="input" />
+                <span asp-validation-for="PriceRubles" class="field-error"></span>
+            </div>
+
+            @* Вес/объём *@
+            <div class="field">
+                <label asp-for="Weight">Вес (г)</label>
+                <input asp-for="Weight" type="number" step="1" min="1" class="input" placeholder="например, 120" />
+                <span asp-validation-for="Weight" class="field-error"></span>
+            </div>
+
+            @* Категория *@
+            <div class="field">
+                <label asp-for="Category">Категория</label>
+                <select asp-for="Category" asp-items="@(new SelectList(Model.Categories, Model.Category))" class="input">
+                    <option value="">— выберите —</option>
+                </select>
+                <span asp-validation-for="Category" class="field-error"></span>
+            </div>
+
+            @* Новая категория *@
+            <div class="field field-wide">
+                <label asp-for="NewCategory">Новая категория <span class="muted">(или впишите сюда, чтобы создать)</span></label>
+                <input asp-for="NewCategory" class="input" placeholder="например, Авторские напитки" />
+                <span asp-validation-for="NewCategory" class="field-error"></span>
+            </div>
+
+            @* Описание *@
+            <div class="field field-wide">
+                <label asp-for="Desc">Описание</label>
+                <textarea asp-for="Desc" rows="3" class="input"></textarea>
+                <span asp-validation-for="Desc" class="field-error"></span>
+            </div>
+
+            @* Фото *@
+            <div class="field field-wide">
+                <label>Фото блюда @(isEdit ? "" : "*")</label>
+                <input type="file" name="photo" accept=".jpg,.jpeg,image/jpeg" class="input" onchange="previewPhoto(this)" @(isEdit ? "" : "required") />
+                <p class="muted small" style="margin-top:.4rem;">
+                    Обязательный формат <b>JPEG</b> (расширение .jpg). До <b>5 МБ</b>.
+                    Лучший размер — <b>квадрат 800×800 px</b> (как все фото на витрине сайта). Минимум 400×400 px.
+                </p>
+                <span class="field-error">@(ViewData.ModelState["photo"]?.Errors.FirstOrDefault()?.ErrorMessage)</span>
+            </div>
+        </div>
+
+        @* Текущее фото (при редактировании) *@
+        @if (isEdit)
+        {
+            <div class="admin-photo-block">
+                <span class="muted small">Текущее фото:</span>
+                @if (!string.IsNullOrEmpty(Model.CurrentImg))
+                {
+                    <img id="photoPreview" src="/img/@Model.CurrentImg" alt="Текущее фото" class="admin-photo-preview" />
+                    <label class="admin-photo-remove">
+                        <input type="checkbox" name="removePhoto" value="true" />
+                        <span>Удалить текущее фото</span>
+                    </label>
+                }
+                else
+                {
+                    <img id="photoPreview" src="/img/placeholder.svg" alt="Фото не задано" class="admin-photo-preview" style="opacity:.4;" />
+                    <span class="muted">фото не задано</span>
+                }
+            </div>
+        }
+
+        <div class="admin-form-actions">
+            <button type="submit" class="btn btn-gold">@(isEdit ? "Сохранить" : "Создать позицию")</button>
+            <a href="/Admin/Menu" class="btn">Отмена</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Живое превью выбранного файла.
+        function previewPhoto(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img = document.getElementById('photoPreview');
+                    if (img) img.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

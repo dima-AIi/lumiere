@@ -1,0 +1,93 @@
+@model Lumiere.Models.MenuData
+@{
+    ViewData["Title"] = "Меню";
+    var items = Model.AllItems.ToList();
+    var flash = TempData["Flash"] as string;
+}
+
+<div class="admin-page">
+    <div class="section-head">
+        <span class="eyebrow">Витрина</span>
+        <h1 class="h2">Управление меню</h1>
+        <div class="rule"></div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(flash))
+    {
+        <div class="admin-flash">@flash</div>
+    }
+
+    @* Краткая справка + кнопка добавления *@
+    <div class="admin-info-grid" style="margin-bottom:2rem;">
+        <div class="admin-panel">
+            <h3>Состояние меню</h3>
+            <div class="kv"><span>Всего блюд и напитков</span><b>@items.Count</b></div>
+            <div class="kv"><span>Категорий</span><b>@Model.Categories.Count</b></div>
+            <div class="kv"><span>Город</span><b>@Model.City</b></div>
+        </div>
+        <div class="admin-panel" style="display:flex;flex-direction:column;justify-content:center;gap:.9rem;">
+            <a class="btn btn-gold" href="/Admin/MenuItemCreate">＋ Добавить позицию</a>
+            <p class="muted" style="font-size:.8rem;line-height:1.5;margin:0;">
+                Можно создать и новую категорию прямо в форме позиции — просто впишите её название.
+            </p>
+        </div>
+    </div>
+
+    @if (items.Count == 0)
+    {
+        <div class="empty">
+            <h3 class="h3">Меню пустое</h3>
+            <p>Добавьте первую позицию кнопкой «＋ Добавить позицию» выше.</p>
+        </div>
+    }
+    else
+    {
+        <div class="admin-menu-cats">
+            @foreach (var cat in Model.Categories)
+            {
+                @if (cat.Items.Count == 0) { continue; }
+                <section class="admin-cat">
+                    <div class="admin-cat-head">
+                        <h3 style="margin:0;">@cat.Title <span class="muted" style="font-size:.8rem;">(@cat.Items.Count)</span></h3>
+                        <div class="admin-cat-actions">
+                            <span class="muted small">Категория</span>
+                            <form asp-controller="Admin" asp-action="CategoryDelete" method="post" class="admin-inline-del"
+                                  onsubmit="return confirm('Удалить категорию «@cat.Title» и все @cat.Items.Count позиций в ней? Это действие необратимо.');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="title" value="@cat.Title" />
+                                <button class="link-open danger" type="submit">Удалить категорию</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="admin-menu-items">
+                        @foreach (var item in cat.Items)
+                        {
+                            <div class="admin-menu-item">
+                                <img src="@item.ImgUrl" alt="@item.Name" />
+                                <div class="mi-in">
+                                    <b>@item.Name</b>
+                                    @if (!string.IsNullOrWhiteSpace(item.WeightText))
+                                    {
+                                        <span class="muted">@item.WeightText</span>
+                                    }
+                                    <div class="admin-cat-actions" style="margin-top:.35rem;gap:.8rem;">
+                                        <a class="link-open" href="/Admin/MenuItemEdit/@item.Id">Изменить</a>
+                                        <form asp-controller="Admin" asp-action="MenuItemDelete" method="post" class="admin-inline-del"
+                                              onsubmit="return confirm('Удалить позицию «@item.Name»?');">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button class="link-open danger" type="submit">Удалить</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <span class="mi-price">@item.PriceRubles.ToString("0") ₽</span>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    }
+</div>
+

@@ -1,0 +1,53 @@
+@{
+    ViewData["Title"] = "Политика конфиденциальности";
+    var menu = (Lumiere.Models.MenuData)ViewBag.Menu!;
+}
+
+<section>
+    <div class="wrap" style="max-width:760px;">
+        <div class="section-head">
+            <span class="eyebrow">Документы</span>
+            <h1 class="h2">Политика конфиденциальности</h1>
+            <div class="rule"></div>
+        </div>
+
+        <p class="muted" style="margin:1.5rem 0;">
+            Сайт является учебным проектом. Ниже — какие данные мы обрабатываем при оформлении заказа.
+        </p>
+
+        <div class="feature-list" style="margin-top:2rem;">
+            <li>
+                <span class="dot"></span>
+                <span>
+                    <b>Что мы собираем</b>
+                    <span>Имя, телефон, адрес доставки и комментарий — только чтобы привезти заказ.</span>
+                </span>
+            </li>
+            <li>
+                <span class="dot"></span>
+                <span>
+                    <b>Где это хранится</b>
+                    <span>Состав заказа хранится в файле на сервере проекта, корзина — только в вашей сессии.</span>
+                </span>
+            </li>
+            <li>
+                <span class="dot"></span>
+                <span>
+                    <b>Данные карты</b>
+                    <span>Вводятся на защищённой странице ЮKassa. Мы их не получаем и не храним.</span>
+                </span>
+            </li>
+            <li>
+                <span class="dot"></span>
+                <span>
+                    <b>Связаться</b>
+                    <span><a href="tel:@menu.Phone">@menu.Phone</a> или по адресу @menu.Address, @menu.City.</span>
+                </span>
+            </li>
+        </div>
+
+        <div style="margin-top:2.5rem;">
+            <a class="btn" href="/">На главную</a>
+        </div>
+    </div>
+</section>
