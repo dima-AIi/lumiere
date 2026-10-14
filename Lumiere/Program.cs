@@ -2,6 +2,14 @@ using Lumiere.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// На хостинге (Render, Fly и т.п.) порт приходит в переменной окружения PORT —
+// слушаем его на всех сетевых интерфейсах. Локально PORT не задан → ничего не меняем.
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 builder.Services.AddControllersWithViews()
     .AddSessionStateTempDataProvider(); // TempData (всплышки «Позиция добавлена/удалена») хранит данные в сессии
 builder.Services.AddHttpContextAccessor();

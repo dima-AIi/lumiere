@@ -1,0 +1,45 @@
+# ---------- Git ----------
+.git
+.gitignore
+.github
+
+# ---------- Артефакты сборки .NET ----------
+**/bin/
+**/obj/
+
+# ---------- Node / вспомогательные инструменты (к сайту не относятся) ----------
+node_modules/
+package.json
+package-lock.json
+
+# ---------- Локальный рабочий мусор ----------
+/shots/
+/src/
+/tools/
+/data/
+/_testimg/
+/_menu.backup.json
+/_menu_rendered.html
+/index_raw.html
+/Lumiere/_checkout_dump.html
+/Lumiere/App_Data/
+
+# ---------- Логи и временные файлы ----------
+*.log
+/_run.err
+/_run.log
+/_srv.err
+/_srv.log
+/server.err.log
+/server.out.log
+/shot.err.log
+/shot.out.log
+banner_check.js
+diag.js
+diag_menu.js
+preloader_check.js
+shot.js
+verify_banner.js
+
+# ---------- IDE ----------
+.vs/
