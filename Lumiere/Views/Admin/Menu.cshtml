@@ -55,7 +55,7 @@
                                   onsubmit="return confirm('Удалить категорию «@cat.Title» и все @cat.Items.Count позиций в ней? Это действие необратимо.');">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="title" value="@cat.Title" />
-                                <button class="link-open danger" type="submit">Удалить категорию</button>
+                                <button class="btn btn-danger btn-sm" type="submit">Удалить категорию</button>
                             </form>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                               onsubmit="return confirm('Удалить позицию «@item.Name»?');">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
-                                            <button class="link-open danger" type="submit">Удалить</button>
+                                            <button class="btn btn-danger btn-sm" type="submit">Удалить</button>
                                         </form>
                                     </div>
                                 </div>

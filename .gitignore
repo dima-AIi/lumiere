@@ -30,6 +30,7 @@ project.lock.json
 
 # ---------- Рантайм-данные приложения ----------
 /Lumiere/App_Data/
+/Lumiere/_checkout_dump.html
 
 # ---------- Локальный рабочий мусор (только в корне репозитория) ----------
 /data/
@@ -52,6 +53,7 @@ project.lock.json
 # Тестовые/временные файлы в корне
 /_test.png
 /_menu.backup.json
+/_menu_rendered.html
 /index_raw.html
 /package.json
 /package-lock.json

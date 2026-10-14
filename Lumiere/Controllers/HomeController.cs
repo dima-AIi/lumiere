@@ -168,6 +168,13 @@ public class HomeController : Controller
         }
         form.Phone = phoneDigits;
 
+        // Адрес: убираем лишние символы (запятые, точки и прочие знаки) —
+        // оставляем только буквы (в т.ч. кириллицу), цифры, пробел, дефис и слэш.
+        // Если от адреса ничего не осталось, а выбран способ «доставка» —
+        // попросим ввести адрес заново.
+        form.Address = System.Text.RegularExpressions.Regex
+            .Replace(form.Address ?? "", @"[^A-Za-zА-Яа-яЁё0-9 \-/]", string.Empty).Trim();
+
         if (form.DeliveryType == "delivery" && string.IsNullOrWhiteSpace(form.Address))
         {
             ModelState.AddModelError(string.Empty, "Для доставки нужен адрес.");

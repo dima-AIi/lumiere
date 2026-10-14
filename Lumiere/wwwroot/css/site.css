@@ -380,8 +380,8 @@ html.show-welcome .preloader{display:flex;}
 .kitchen-tabs label.checked span{background:var(--gold-light);border-color:var(--gold-light);color:#241C18;}
 
 /* Кнопка «Отклонить» (красная) — рядом с золотой «Принять» */
-.btn-danger{border-color:var(--danger);color:var(--danger);}
-.btn-danger:hover{background:var(--danger);border-color:var(--danger);color:var(--white);}
+.btn-danger{background:var(--danger);border-color:var(--danger);color:var(--white);}
+.btn-danger:hover{background:#7f2f24;border-color:#7f2f24;color:var(--white);}
 
 /* Заголовок блока внутри страницы */
 .admin-block-title{margin:2.2rem 0 1.1rem;font-family:'Cormorant',serif;font-weight:400;font-size:1.5rem;color:var(--cream);}

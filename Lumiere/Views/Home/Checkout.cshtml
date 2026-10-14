@@ -56,7 +56,7 @@
 
                 <div class="field" id="addressField">
                     <label asp-for="Address">Адрес доставки</label>
-                    <input asp-for="Address" placeholder="Улица, дом, квартира" />
+                    <input asp-for="Address" placeholder="Улица дом квартира" />
                     <span class="muted" style="font-size:.74rem;">Нужен только при доставке</span>
                 </div>
 
@@ -202,6 +202,24 @@
             phone.addEventListener('input', applyMask);
             // Если поле вернулось с ошибкой валидации — нормализуем вид.
             if (phone.value) applyMask();
+        })();
+
+        // ---------- Адрес: оставляем только буквы, цифры, пробел, дефис и слэш ----------
+        // Запятые, точки и прочие знаки препинания не даём ввести (их также вырежет сервер).
+        (function () {
+            var addr = document.getElementById('Address');
+            if (!addr) return;
+            var notAllowed = /[^A-Za-zА-Яа-яЁё0-9 \-\/]/g;
+            addr.addEventListener('input', function () {
+                var cleaned = addr.value.replace(notAllowed, '');
+                if (cleaned !== addr.value) {
+                    var removed = addr.value.length - cleaned.length;
+                    var pos = (addr.selectionStart || 0) - removed;
+                    if (pos < 0) pos = 0;
+                    addr.value = cleaned;
+                    try { addr.setSelectionRange(pos, pos); } catch (e) {}
+                }
+            });
         })();
     </script>
 }
