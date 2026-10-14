@@ -6,12 +6,12 @@
 
 services:
   - type: web                          # HTTP-сервис с публичной ссылкой
-    name: lumiere                      # попадёт в адрес: https://lumiere-XXXX.onrender.com
+    name: lumiere                      # совпадает с созданным сервисом: https://lumiere-6rtb.onrender.com
     runtime: docker                    # собираем образ через Dockerfile в корне репозитория
     plan: free                         # бесплатный тариф
     region: frankfurt                  # сервер во Франкфурте — ближе всего к РФ
     branch: main                       # ветка для деплоя
-    autoDeploy: true                   # каждый git push в main = авто-обновление сайта
+    autoDeployTrigger: commit          # каждый git push в main = авто-обновление сайта
     dockerfilePath: ./Dockerfile       # путь к Dockerfile
     dockerContext: .                   # корень репозитория как контекст сборки
     healthCheckPath: /                 # Render пингует главную, чтобы понять, что сайт жив
