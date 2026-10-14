@@ -1,0 +1,22 @@
+# Render Blueprint — описывает, как развернуть Lumière на render.com.
+# Документация формата: https://render.com/docs/blueprint-spec
+#
+# Когда этот файл лежит в корне репозитория, Render увидит его при создании
+# сервиса (New > Blueprint Instance) и сам подставит все настройки ниже.
+
+services:
+  - type: web                          # HTTP-сервис с публичной ссылкой
+    name: lumiere                      # попадёт в адрес: https://lumiere-XXXX.onrender.com
+    runtime: docker                    # собираем образ через Dockerfile в корне репозитория
+    plan: free                         # бесплатный тариф
+    region: frankfurt                  # сервер во Франкфурте — ближе всего к РФ
+    branch: main                       # ветка для деплоя
+    autoDeploy: true                   # каждый git push в main = авто-обновление сайта
+    dockerfilePath: ./Dockerfile       # путь к Dockerfile
+    dockerContext: .                   # корень репозитория как контекст сборки
+    healthCheckPath: /                 # Render пингует главную, чтобы понять, что сайт жив
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production              # боевой режим: нормальная страница ошибок вместо стека
+      # PORT Render передаёт автоматически — задавать вручную НЕ нужно.
+      # Приложение читает его в Program.cs и слушает http://0.0.0.0:$PORT.
