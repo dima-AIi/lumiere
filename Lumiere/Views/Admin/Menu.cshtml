@@ -52,7 +52,7 @@
                         <div class="admin-cat-actions">
                             <span class="muted small">Категория</span>
                             <form asp-controller="Admin" asp-action="CategoryDelete" method="post" class="admin-inline-del"
-                                  onsubmit="return confirm('Удалить категорию «@cat.Title» и все @cat.Items.Count позиций в ней? Это действие необратимо.');">
+                                  onsubmit="return confirm('Удалить категорию «@(cat.Title.Replace("'", "\\'"))» и все @cat.Items.Count позиций в ней? Это действие необратимо.');">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="title" value="@cat.Title" />
                                 <button class="btn btn-danger btn-sm" type="submit">Удалить категорию</button>
@@ -74,7 +74,7 @@
                                     <div class="admin-cat-actions" style="margin-top:.35rem;gap:.8rem;">
                                         <a class="link-open" href="/Admin/MenuItemEdit/@item.Id">Изменить</a>
                                         <form asp-controller="Admin" asp-action="MenuItemDelete" method="post" class="admin-inline-del"
-                                              onsubmit="return confirm('Удалить позицию «@item.Name»?');">
+                                              onsubmit="return confirm('Удалить позицию «@(item.Name.Replace("'", "\\'"))»?');">
                                             @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="@item.Id" />
                                             <button class="btn btn-danger btn-sm" type="submit">Удалить</button>

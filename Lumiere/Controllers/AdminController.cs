@@ -246,7 +246,7 @@ public class AdminController : Controller
             Id = Guid.NewGuid().ToString(),
             Name = vm.Name.Trim(),
             Desc = vm.Desc?.Trim() ?? "",
-            Price = vm.PriceRubles * 100,
+            Price = (int)Math.Round(vm.PriceRubles * 100, MidpointRounding.AwayFromZero),
             Weight = vm.Weight,
             Img = photoName ?? ""
         };
@@ -283,7 +283,7 @@ public class AdminController : Controller
             Name = item.Name,
             Desc = item.Desc,
             PriceRubles = (int)Math.Round(item.PriceRubles, MidpointRounding.AwayFromZero),
-            Weight = item.Weight ?? 0,
+            Weight = item.Weight ?? 1,
             Category = currentCat,
             Categories = data.Categories.Select(c => c.Title).ToList()
         };
@@ -322,7 +322,7 @@ public class AdminController : Controller
 
         item.Name = vm.Name.Trim();
         item.Desc = vm.Desc?.Trim() ?? "";
-        item.Price = vm.PriceRubles * 100;
+        item.Price = (int)Math.Round(vm.PriceRubles * 100, MidpointRounding.AwayFromZero);
         item.Weight = vm.Weight;
 
         if (photoName is not null)

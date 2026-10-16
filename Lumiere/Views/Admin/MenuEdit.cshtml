@@ -26,7 +26,7 @@
         <div class="admin-edit-grid">
             @* Название *@
             <div class="field">
-                <label asp-for="Name"></label>
+                <label asp-for="Name">Название</label>
                 <input asp-for="Name" class="input" />
                 <span asp-validation-for="Name" class="field-error"></span>
             </div>
@@ -34,7 +34,7 @@
             @* Цена *@
             <div class="field">
                 <label asp-for="PriceRubles">Цена (₽)</label>
-                <input asp-for="PriceRubles" type="number" step="1" min="1" class="input" />
+                <input asp-for="PriceRubles" type="number" step="0.01" min="0.01" class="input" />
                 <span asp-validation-for="PriceRubles" class="field-error"></span>
             </div>
 

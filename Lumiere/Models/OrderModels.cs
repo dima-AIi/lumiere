@@ -141,12 +141,12 @@ public class AdminMenuItemViewModel
 
     [Required(ErrorMessage = "Укажите название позиции")]
     [StringLength(120)]
-    [RegularExpression(@"^[^0-9]+$", ErrorMessage = "В названии не должно быть цифр")]
+    [Display(Name = "Название")]
     public string Name { get; set; } = "";
 
     [Required(ErrorMessage = "Укажите цену")]
-    [Range(1, 1_000_000, ErrorMessage = "Цена — целое число рублей, больше нуля, без букв, точек и запятых")]
-    public int PriceRubles { get; set; }            // рубли для формы; при сохранении → копейки (×100)
+    [Range(0.01, 1_000_000, ErrorMessage = "Цена должна быть больше нуля")]
+    public decimal PriceRubles { get; set; }            // рубли для формы; при сохранении → копейки (×100)
 
     [Required(ErrorMessage = "Укажите вес в граммах")]
     [Range(1, 20000, ErrorMessage = "Вес должен быть целым числом больше нуля")]
