@@ -55,8 +55,8 @@
 Подключена **ЮKassa** в демо-режиме (ключи пустые в `appsettings.json`).
 Для боевых платежей заполни `ShopId` и `SecretKey` в `Lumiere/appsettings.json`.
 
-## 🚀 Деплой на хостинг
+## ▶️ Запуск
 
-В репозитории есть `Dockerfile`, `.dockerignore` и `render.yaml` — этого
-достаточно, чтобы развернуть приложение на **Render.com** (New → Web Service,
-Runtime: Docker) или на любом другом хостинге с поддержкой Docker.
+Локально — `dotnet run` (см. выше). Хостинг/Docker-деплой из проекта убран:
+при необходимости развернуть, файлы `Dockerfile`/`render.yaml` можно вернуть
+из истории git (коммит `792705f`).
