@@ -1,0 +1,1 @@
+Start-Process powershell.exe -ArgumentList "-NoExit", "-Command", "cd 'D:\мдк0202\мдк0202\Lumiere'; dotnet run --project Lumiere.csproj" -WindowStyle Minimized

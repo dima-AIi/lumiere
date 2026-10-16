@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Lumi&#xE8;re &#x2014; &#x434;&#x435;&#x441;&#x435;&#x440;&#x442;&#x44B; &#x438; &#x43A;&#x43E;&#x444;&#x435; &#x432; &#x410;&#x440;&#x43C;&#x430;&#x432;&#x438;&#x440;&#x435;</title>
+    <meta name="description" content="Lumière — десерты и кофе в Армавире. Свежая выпечка, европейская кухня, доставка." />
+    <link rel="icon" href="/img/logo.svg" />
+    <link rel="stylesheet" href="/css/site.css?v=157QR4FXVFL4-CFWEqQs9M24bmGB9ZsoMJNaINNJYvk" />
+    <script>
+        // Приветственный экран — только при первом визите (флаг в localStorage).
+        // Класс на <html> решает, рисовать ли прелоадер, ещё до отрисовки body —
+        // так на обычных переходах (меню, корзина) его не видно вообще, без вспышки.
+        (function () {
+            var force = /[?&]welcome\b/.test(location.search);
+            var seen = false;
+            try { seen = localStorage.getItem('lumiere_welcome') === '1'; }
+            catch (e) { seen = ('; ' + document.cookie).indexOf('; lumiere_welcome=1') > -1; }
+            if (force || !seen) document.documentElement.classList.add('show-welcome');
+        })();
+    </script>
+</head>
+<body>
+    <div b-l3w3rbvocx class="preloader" id="preloader" aria-hidden="true">
+        <div b-l3w3rbvocx class="preloader-in">
+            <div b-l3w3rbvocx class="preloader-welcome">
+                <span b-l3w3rbvocx class="preloader-title">Добро пожаловать!</span>
+                <p b-l3w3rbvocx class="preloader-text">Повара уже на низком старте и ждут ваших заказов</p>
+            </div>
+        </div>
+    </div>
+
+    <div b-l3w3rbvocx class="topbar">
+        <div b-l3w3rbvocx class="wrap">
+            <span b-l3w3rbvocx>Ежедневно с 10:00 до 23:59</span>
+            <span b-l3w3rbvocx>&#x443;&#x43B;. &#x41F;&#x43E;&#x440;&#x442;&#x43E;&#x432;&#x430;&#x44F;, 15, &#x410;&#x440;&#x43C;&#x430;&#x432;&#x438;&#x440;</span>
+            <span b-l3w3rbvocx>&#x2B;7 (800) 555-35-35</span>
+        </div>
+    </div>
+
+    <header b-l3w3rbvocx class="site">
+        <div b-l3w3rbvocx class="wrap header-in">
+            <a b-l3w3rbvocx class="logo" href="/">
+                <img b-l3w3rbvocx class="logo-mark" src="/img/logo.svg" alt="Lumière" />
+                <span b-l3w3rbvocx class="logo-text">
+                    <span b-l3w3rbvocx class="logo-name">Lumière</span>
+                    <span b-l3w3rbvocx class="logo-sub">DESSERTS &amp; COFFEE</span>
+                </span>
+            </a>
+
+            <button b-l3w3rbvocx class="burger" id="burger" aria-label="Меню">&#9776;</button>
+
+            <nav b-l3w3rbvocx class="nav" id="nav">
+                <a b-l3w3rbvocx href="/">Главная</a>
+                <a b-l3w3rbvocx href="/Home/Menu">Меню</a>
+                <a b-l3w3rbvocx href="/Home/Contacts">Контакты</a>
+                <a b-l3w3rbvocx class="cart-pill" href="/Home/CartPage">
+                    Корзина <span b-l3w3rbvocx class="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main b-l3w3rbvocx>
+        
+<section class="hero">
+    <img class="hero-img" src="/img/9701db93-47f4-43a9-916a-8335927e0ccc.jpeg" alt="&#x421;&#x44B;&#x442;&#x43D;&#x44B;&#x439; &#x431;&#x43B;&#x438;&#x43D;&#x447;&#x438;&#x43A; &#x441; &#x432;&#x435;&#x442;&#x447;&#x438;&#x43D;&#x43E;&#x439;, &#x433;&#x440;&#x438;&#x431;&#x430;&#x43C;&#x438; &#x438; &#x43C;&#x43E;&#x446;&#x430;&#x440;&#x435;&#x43B;&#x43B;&#x43E;&#x439;" />
+    <video class="hero-video" src="/video/latte-art.mp4" poster="/video/latte-art.jpg"
+           autoplay muted loop playsinline preload="metadata"
+           aria-label="Бариста готовит кофе и рисует латте-арт"></video>
+    <div class="wrap">
+        <div class="hero-in">
+            <span class="eyebrow">DESSERTS &amp; COFFEE · &#x410;&#x440;&#x43C;&#x430;&#x432;&#x438;&#x440;</span>
+            <h1 class="display">Тишина вкуса<br />в каждой детали</h1>
+            <p>
+                Небольшое кафе, где выпечку пекут до рассвета, а кофе обжаривают зёрна
+                за неделю до вашего визита. Сюда стоит приходить просто сидеть.
+            </p>
+            <div class="hero-actions">
+                <a class="btn btn-gold" href="/Home/Menu">Смотреть меню</a>
+                <a class="btn" href="/Home/Contacts">Как нас найти</a>
+            </div>
+            <div class="hero-facts">
+                <div class="hero-fact">
+                    <b>85</b>
+                    <span>позиций в меню</span>
+                </div>
+                <div class="hero-fact">
+                    <b>10:00—23:59</b>
+                    <span>каждый день</span>
+                </div>
+                <div class="hero-fact">
+                    <b>199 ₽</b>
+                    <span>доставка от</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="band">
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Философия</span>
+            <h2 class="h2">Готовим так, как учили бабушки</h2>
+            <div class="rule"></div>
+        </div>
+
+        <div class="split">
+            <img src="/img/ed23cd41-4bd3-4f6a-a922-42a772fa5e16.jpeg" alt="&#x421;&#x44B;&#x440;&#x43D;&#x438;&#x43A;&#x438; &#x441;&#x43E; &#x441;&#x43C;&#x435;&#x442;&#x430;&#x43D;&#x43E;&#x439;" loading="lazy" />
+            <div>
+                <p class="muted">
+                    У нас нет технологий и позиций на двадцать страниц. Есть утренняя смена,
+                    которая печёт круассан из French butter, обжарщик, который каждое утро
+                    настраивает профиль обжарки, и кухня, где всё делается вручную —
+                    от теста до подачи.
+                </p>
+                <ul class="feature-list">
+                    <li>
+                        <span class="dot"></span>
+                        <span>
+                            <b>Выпечка каждый день</b>
+                            <span>Тесто замешивают ночью, выпекают утром — на полках всегда свежее.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="dot"></span>
+                        <span>
+                            <b>Собственное обжаривание</b>
+                            <span>Зёрна подбираем под сезон и обжариваем малыми партиями.</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="dot"></span>
+                        <span>
+                            <b>Честный состав</b>
+                            <span>Сливки, масло и шоколад — без суррогатов и разбавителей.</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Витрина</span>
+            <h2 class="h2">Избранное гостей</h2>
+            <div class="rule"></div>
+        </div>
+
+        <div class="grid">
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="/img/9701db93-47f4-43a9-916a-8335927e0ccc.jpeg" alt="&#x421;&#x44B;&#x442;&#x43D;&#x44B;&#x439; &#x431;&#x43B;&#x438;&#x43D;&#x447;&#x438;&#x43A; &#x441; &#x432;&#x435;&#x442;&#x447;&#x438;&#x43D;&#x43E;&#x439;, &#x433;&#x440;&#x438;&#x431;&#x430;&#x43C;&#x438; &#x438; &#x43C;&#x43E;&#x446;&#x430;&#x440;&#x435;&#x43B;&#x43B;&#x43E;&#x439;" loading="lazy" />
+                            <span class="card-weight">100 &#x433;</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">&#x421;&#x44B;&#x442;&#x43D;&#x44B;&#x439; &#x431;&#x43B;&#x438;&#x43D;&#x447;&#x438;&#x43A; &#x441; &#x432;&#x435;&#x442;&#x447;&#x438;&#x43D;&#x43E;&#x439;, &#x433;&#x440;&#x438;&#x431;&#x430;&#x43C;&#x438; &#x438; &#x43C;&#x43E;&#x446;&#x430;&#x440;&#x435;&#x43B;&#x43B;&#x43E;&#x439;</h3>
+                        <div class="card-foot">
+                            <span class="price">300 <small>₽</small></span>
+                            <form method="post" class="add-to-cart" action="/Home/AddToCart">
+                                
+                                <input type="hidden" name="id" value="019aa1e2-435b-705c-8a8d-2f8f021a16ab" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Of2B7UHRRxIqOgwQ72gF2nai-oZQp2O-KFc7LCulJNfOZ8xeUjIY9G4j57nCDBTvkzL01CTPQGCW4gcHzGJCdEEVrOjNGQ7bH_lpQWPgN33ID8ZKmX3IfAx_-jSzCRXX3RW5TrscMbsCpV8fzDw9v4" /></form>
+                        </div>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="/img/093d76c1-a30f-4cdc-8c68-62a90a9aac8f.jpeg" alt="&#x421;&#x44B;&#x442;&#x43D;&#x44B;&#x439; &#x431;&#x43B;&#x438;&#x43D;&#x447;&#x438;&#x43A; &#x441; &#x43D;&#x430;&#x447;&#x438;&#x43D;&#x43A;&#x43E;&#x439; &#x43D;&#x430; &#x432;&#x44B;&#x431;&#x43E;&#x440;" loading="lazy" />
+                            <span class="card-weight">250 &#x433;</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">&#x421;&#x44B;&#x442;&#x43D;&#x44B;&#x439; &#x431;&#x43B;&#x438;&#x43D;&#x447;&#x438;&#x43A; &#x441; &#x43D;&#x430;&#x447;&#x438;&#x43D;&#x43A;&#x43E;&#x439; &#x43D;&#x430; &#x432;&#x44B;&#x431;&#x43E;&#x440;</h3>
+                            <p class="card-desc">&#x41D;&#x430;&#x447;&#x438;&#x43D;&#x43A;&#x430; &#x43D;&#x430; &#x432;&#x44B;&#x431;&#x43E;&#x440;: &#x43C;&#x435;&#x434;, &#x434;&#x436;&#x435;&#x43C;, &#x441;&#x433;&#x443;&#x449;&#x451;&#x43D;&#x43D;&#x43E;&#x435; &#x43C;&#x43E;&#x43B;&#x43E;&#x43A;&#x43E; &#x438;&#x43B;&#x438; &#x43D;&#x443;&#x442;&#x435;&#x43B;&#x43B;&#x430;</p>
+                        <div class="card-foot">
+                            <span class="price">290 <small>₽</small></span>
+                            <form method="post" class="add-to-cart" action="/Home/AddToCart">
+                                
+                                <input type="hidden" name="id" value="019aa1ae-95ea-7166-8ca1-7ecae610a8e6" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Of2B7UHRRxIqOgwQ72gF2nai-oZQp2O-KFc7LCulJNfOZ8xeUjIY9G4j57nCDBTvkzL01CTPQGCW4gcHzGJCdEEVrOjNGQ7bH_lpQWPgN33ID8ZKmX3IfAx_-jSzCRXX3RW5TrscMbsCpV8fzDw9v4" /></form>
+                        </div>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="/img/6b1eebcd-1330-48b3-b686-2f222663b949.jpeg" alt="&#x41E;&#x432;&#x441;&#x44F;&#x43D;&#x430;&#x44F; &#x43A;&#x430;&#x448;&#x430; &#x43D;&#x430; &#x43C;&#x43E;&#x43B;&#x43E;&#x43A;&#x435; &#x441; &#x43C;&#x435;&#x434;&#x43E;&#x43C; &#x438; &#x433;&#x440;&#x435;&#x446;&#x43A;&#x438;&#x43C;&#x438; &#x43E;&#x440;&#x435;&#x445;&#x430;&#x43C;&#x438;" loading="lazy" />
+                            <span class="card-weight">250 &#x433;</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">&#x41E;&#x432;&#x441;&#x44F;&#x43D;&#x430;&#x44F; &#x43A;&#x430;&#x448;&#x430; &#x43D;&#x430; &#x43C;&#x43E;&#x43B;&#x43E;&#x43A;&#x435; &#x441; &#x43C;&#x435;&#x434;&#x43E;&#x43C; &#x438; &#x433;&#x440;&#x435;&#x446;&#x43A;&#x438;&#x43C;&#x438; &#x43E;&#x440;&#x435;&#x445;&#x430;&#x43C;&#x438;</h3>
+                        <div class="card-foot">
+                            <span class="price">290 <small>₽</small></span>
+                            <form method="post" class="add-to-cart" action="/Home/AddToCart">
+                                
+                                <input type="hidden" name="id" value="019aa1ae-38c8-72f8-9afa-49e05858d08c" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Of2B7UHRRxIqOgwQ72gF2nai-oZQp2O-KFc7LCulJNfOZ8xeUjIY9G4j57nCDBTvkzL01CTPQGCW4gcHzGJCdEEVrOjNGQ7bH_lpQWPgN33ID8ZKmX3IfAx_-jSzCRXX3RW5TrscMbsCpV8fzDw9v4" /></form>
+                        </div>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="/img/67e91724-f721-4672-b280-9bc70a95af6f.jpeg" alt="&#x41A;&#x443;&#x442;&#x430;&#x431; &#x441; &#x43A;&#x443;&#x440;&#x43E;&#x447;&#x43A;&#x43E;&#x439; &#x438; &#x437;&#x435;&#x43B;&#x435;&#x43D;&#x44C;&#x44E;" loading="lazy" />
+                            <span class="card-weight">200 &#x433;</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">&#x41A;&#x443;&#x442;&#x430;&#x431; &#x441; &#x43A;&#x443;&#x440;&#x43E;&#x447;&#x43A;&#x43E;&#x439; &#x438; &#x437;&#x435;&#x43B;&#x435;&#x43D;&#x44C;&#x44E;</h3>
+                        <div class="card-foot">
+                            <span class="price">290 <small>₽</small></span>
+                            <form method="post" class="add-to-cart" action="/Home/AddToCart">
+                                
+                                <input type="hidden" name="id" value="019aa1e7-17e5-702d-8e1b-5bb83c3f02da" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Of2B7UHRRxIqOgwQ72gF2nai-oZQp2O-KFc7LCulJNfOZ8xeUjIY9G4j57nCDBTvkzL01CTPQGCW4gcHzGJCdEEVrOjNGQ7bH_lpQWPgN33ID8ZKmX3IfAx_-jSzCRXX3RW5TrscMbsCpV8fzDw9v4" /></form>
+                        </div>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="/img/be59f411-8114-49ab-af7a-a60d6570bf4a.jpeg" alt="&#x414;&#x43E;&#x441;&#x43A;&#x430; &#x441; &#x435;&#x432;&#x440;&#x43E;&#x43F;&#x435;&#x439;&#x441;&#x43A;&#x438;&#x43C;&#x438; &#x441;&#x44B;&#x440;&#x430;&#x43C;&#x438;" loading="lazy" />
+                            <span class="card-weight">200 &#x433;</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">&#x414;&#x43E;&#x441;&#x43A;&#x430; &#x441; &#x435;&#x432;&#x440;&#x43E;&#x43F;&#x435;&#x439;&#x441;&#x43A;&#x438;&#x43C;&#x438; &#x441;&#x44B;&#x440;&#x430;&#x43C;&#x438;</h3>
+                            <p class="card-desc">&#x41F;&#x430;&#x440;&#x43C;&#x435;&#x437;&#x430;&#x43D;, &#x441;&#x44B;&#x440; &#x441; &#x431;&#x43B;&#x430;&#x433;&#x43E;&#x440;&#x43E;&#x434;&#x43D;&#x43E;&#x439; &#x43F;&#x43B;&#x435;&#x441;&#x435;&#x43D;&#x44C;&#x44E;, &#x43C;&#x43E;&#x446;&#x430;&#x440;&#x435;&#x43B;&#x43B;&#x430;, &#x441;&#x443;&#x43B;&#x443;&#x433;&#x443;&#x43D;&#x438;</p>
+                        <div class="card-foot">
+                            <span class="price">770 <small>₽</small></span>
+                            <form method="post" class="add-to-cart" action="/Home/AddToCart">
+                                
+                                <input type="hidden" name="id" value="019aa1e6-1171-7241-a8cf-45367d0ed065" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Of2B7UHRRxIqOgwQ72gF2nai-oZQp2O-KFc7LCulJNfOZ8xeUjIY9G4j57nCDBTvkzL01CTPQGCW4gcHzGJCdEEVrOjNGQ7bH_lpQWPgN33ID8ZKmX3IfAx_-jSzCRXX3RW5TrscMbsCpV8fzDw9v4" /></form>
+                        </div>
+                    </div>
+                </article>
+                <article class="card">
+                    <div class="card-photo">
+                        <img src="/img/63890c8f-af3c-4fe2-ae7e-522d6c945302.jpeg" alt="&#x41A;&#x43B;&#x430;&#x431;-&#x441;&#x435;&#x43D;&#x434;&#x432;&#x438;&#x447; &#x441; &#x43A;&#x443;&#x440;&#x43E;&#x447;&#x43A;&#x43E;&#x439;" loading="lazy" />
+                            <span class="card-weight">350 &#x433;</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-name">&#x41A;&#x43B;&#x430;&#x431;-&#x441;&#x435;&#x43D;&#x434;&#x432;&#x438;&#x447; &#x441; &#x43A;&#x443;&#x440;&#x43E;&#x447;&#x43A;&#x43E;&#x439;</h3>
+                        <div class="card-foot">
+                            <span class="price">490 <small>₽</small></span>
+                            <form method="post" class="add-to-cart" action="/Home/AddToCart">
+                                
+                                <input type="hidden" name="id" value="019aa1e8-99ba-71a5-a426-cfbae63669a5" />
+                                <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
+                            <input name="__RequestVerificationToken" type="hidden" value="CfDJ8Of2B7UHRRxIqOgwQ72gF2nai-oZQp2O-KFc7LCulJNfOZ8xeUjIY9G4j57nCDBTvkzL01CTPQGCW4gcHzGJCdEEVrOjNGQ7bH_lpQWPgN33ID8ZKmX3IfAx_-jSzCRXX3RW5TrscMbsCpV8fzDw9v4" /></form>
+                        </div>
+                    </div>
+                </article>
+        </div>
+
+        <div class="center" style="margin-top:3rem;">
+            <a class="btn" href="/Home/Menu">Всё меню — 85 позиций</a>
+        </div>
+    </div>
+</section>
+
+<section class="band-dark">
+    <div class="wrap">
+        <div class="section-head">
+            <span class="eyebrow">Из нашего цеха</span>
+            <h2 class="h2">Сладкое в движении</h2>
+            <div class="rule"></div>
+        </div>
+
+        <div class="video-grid">
+            <figure class="video-card">
+                <video src="/video/cake-cream.mp4" poster="/video/cake-cream.jpg"
+                       autoplay muted loop playsinline preload="metadata"
+                       aria-label="Кондитер наносит крем на торт"></video>
+                <figcaption>
+                    <span>Десерты</span>
+                    <b>Каждый десерт собираем вручную</b>
+                </figcaption>
+            </figure>
+            <figure class="video-card">
+                <video src="/video/whisk-cream.mp4" poster="/video/whisk-cream.jpg"
+                       autoplay muted loop playsinline preload="metadata"
+                       aria-label="Миксер взбивает сливочный крем"></video>
+                <figcaption>
+                    <span>Сливочный крем</span>
+                    <b>Взбиваем перед подачей, без заготовок</b>
+                </figcaption>
+            </figure>
+            <figure class="video-card">
+                <video src="/video/cupcake-cream.mp4" poster="/video/cupcake-cream.jpg"
+                       autoplay muted loop playsinline preload="metadata"
+                       aria-label="Кондитер расписывает купкейки кремом"></video>
+                <figcaption>
+                    <span>Кондитерский цех</span>
+                    <b>Тесто и кремы — с утра до открытия</b>
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</section>
+
+    <section class="band">
+        <div class="wrap">
+            <div class="split">
+                <div>
+                    <span class="eyebrow">Десерты</span>
+                    <h2 class="h2" style="margin:.8rem 0 1rem;">Сладкое, ради чего возвращаются</h2>
+                    <p class="muted" style="margin-bottom:1.8rem;">
+                        Классические French patisserie — тарты с фруктами, шоколадные десерты
+                        и слоёная выпечка из нашего цеха.
+                    </p>
+                    <ul class="foot-list" style="gap:.9rem;">
+                            <li style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;">
+                                <span>&#x427;&#x438;&#x437;&#x43A;&#x435;&#x439;&#x43A; &#x41D;&#x44C;&#x44E; &#x419;&#x43E;&#x440;&#x43A;</span>
+                                <span class="price">290 ₽</span>
+                            </li>
+                            <li style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;">
+                                <span>&#x422;&#x440;&#x44E;&#x444;&#x435;&#x43B;&#x44C;</span>
+                                <span class="price">190 ₽</span>
+                            </li>
+                            <li style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;">
+                                <span>&#x41C;&#x43E;&#x442;&#x438;</span>
+                                <span class="price">290 ₽</span>
+                            </li>
+                            <li style="display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.6rem;">
+                                <span>&#x428;&#x442;&#x440;&#x443;&#x434;&#x435;&#x43B;&#x44C; &#x441; &#x432;&#x438;&#x448;&#x43D;&#x435;&#x439;</span>
+                                <span class="price">440 ₽</span>
+                            </li>
+                    </ul>
+                </div>
+                <img src="/img/56b89322-fe2a-4937-b35c-8ea961ac187d.jpeg"
+                     alt="&#x414;&#x435;&#x441;&#x435;&#x440;&#x442;&#x44B;" loading="lazy" />
+            </div>
+        </div>
+    </section>
+
+
+    </main>
+
+    <footer b-l3w3rbvocx class="site">
+        <div b-l3w3rbvocx class="wrap">
+            <div b-l3w3rbvocx class="foot-grid">
+                <div b-l3w3rbvocx>
+                    <h4 b-l3w3rbvocx>Lumière</h4>
+                    <p b-l3w3rbvocx style="max-width:380px;">
+                        Кафе десертов и кофе. Выпечку печём каждое утро, зёрна обжариваем
+                        собственного обжарщика и подаём всё, под чем хочется задержаться подольше.
+                    </p>
+                    <div b-l3w3rbvocx class="pay-logos">
+                        <span b-l3w3rbvocx class="pay-logo">МИР</span>
+                        <span b-l3w3rbvocx class="pay-logo">Visa</span>
+                        <span b-l3w3rbvocx class="pay-logo">Mastercard</span>
+                        <span b-l3w3rbvocx class="pay-logo">СБП</span>
+                    </div>
+                </div>
+                <div b-l3w3rbvocx>
+                    <h4 b-l3w3rbvocx><a b-l3w3rbvocx href="/Home/Menu">Меню</a></h4>
+                    <ul b-l3w3rbvocx class="foot-list">
+                        <li b-l3w3rbvocx><a b-l3w3rbvocx href="/Home/Menu?q=Кофе">Кофе</a></li>
+                        <li b-l3w3rbvocx><a b-l3w3rbvocx href="/Home/Menu?q=Десерты">Десерты</a></li>
+                        <li b-l3w3rbvocx><a b-l3w3rbvocx href="/Home/Menu?q=Пицца">Пицца</a></li>
+                        <li b-l3w3rbvocx><a b-l3w3rbvocx href="/Home/Menu?q=Салаты">Салаты</a></li>
+                    </ul>
+                </div>
+                <div b-l3w3rbvocx>
+                    <h4 b-l3w3rbvocx>Контакты</h4>
+                    <ul b-l3w3rbvocx class="foot-list">
+                        <li b-l3w3rbvocx><a b-l3w3rbvocx href="tel:&#x2B;7 (800) 555-35-35">&#x2B;7 (800) 555-35-35</a></li>
+                        <li b-l3w3rbvocx><a b-l3w3rbvocx href="/Home/Contacts">&#x443;&#x43B;. &#x41F;&#x43E;&#x440;&#x442;&#x43E;&#x432;&#x430;&#x44F;, 15</a></li>
+                        <li b-l3w3rbvocx><span b-l3w3rbvocx>10:00 — 23:59</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div b-l3w3rbvocx class="foot-bottom">
+                <span b-l3w3rbvocx>© 2026 Lumière. Учебный проект.</span>
+                <span b-l3w3rbvocx>
+                    <a b-l3w3rbvocx href="/Admin">Панель управления</a> ·
+                    <a b-l3w3rbvocx href="/Home/Privacy">Политика конфиденциальности</a> ·
+                    Оплата через ЮKassa
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const burger = document.getElementById('burger');
+        const nav = document.getElementById('nav');
+        burger?.addEventListener('click', () => nav.classList.toggle('open'));
+    </script>
+    <script src="/js/site.js?v=1Z30xnZ6SxLik4PcjGKjKWdFihmoTjhaXUIkwpYeTuc"></script>
+    
+</body>
+</html>

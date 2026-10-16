@@ -64,5 +64,8 @@ project.lock.json
 /shot.js
 /verify_banner.js
 
+# Портативный архив для переноса на другой ПК (build-артефакт, не для git)
+/Lumiere-portable.zip
+
 # ---------- Служебная папка ассистента ----------
 /.workbuddy-ai/
