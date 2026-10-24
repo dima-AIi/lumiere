@@ -1,5 +1,17 @@
 # Lumière: Vercel + Render + Neon
 
+Публичный адрес: https://lumiere-sigma-three.vercel.app/
+Админка: https://lumiere-sigma-three.vercel.app/Admin
+Сервер: https://lumiere-api-3cu2.onrender.com
+
+## Доступ администратора
+
+При первой публикации создан отдельный случайный пароль. Он не выводился в чат
+и не сохранялся в GitHub. Откройте Render → сервис `lumiere-api` → Environment →
+Secret Files → `lumiere.json`; нужное поле — `Admin.Password`. В этом файле также
+находится подключение только Lumiere-базы. Не копируйте файл в переписку или Git.
+Переменные окружения Render имеют приоритет над секретным файлом.
+
 ## Архитектура
 
 - Vercel собирает публичные Razor-представления в HTML. Главная, меню, контакты,

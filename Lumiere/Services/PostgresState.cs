@@ -34,6 +34,8 @@ public sealed class PostgresState : IDisposable, IXmlRepository
         }
         else settings = new NpgsqlConnectionStringBuilder(value);
         settings.MaxPoolSize = 5;
+        // Neon uses verified TLS. Do not probe unavailable Kerberos libraries in a small Linux image.
+        settings.GssEncryptionMode = GssEncryptionMode.Disable;
         if (config["Postgres:Schema"] is { Length: > 0 } schema)
         {
             if (!System.Text.RegularExpressions.Regex.IsMatch(schema, "^[a-z_][a-z0-9_]*$")) throw new InvalidOperationException("Invalid database schema name.");

@@ -1,5 +1,6 @@
 @model Lumiere.Models.CheckoutForm
 @inject Lumiere.Services.CartService Cart
+@inject Lumiere.Services.YooKassaService Payments
 @{
     ViewData["Title"] = "Оформление заказа";
     var cart = Cart.Get();
@@ -13,6 +14,11 @@
             <h1 class="h2">Оформление заказа</h1>
             <div class="rule"></div>
         </div>
+
+        @if (!Payments.IsConfigured)
+        {
+            <p class="muted" role="status">Учебный демонстрационный заказ. Реальная оплата отключена, деньги не списываются.</p>
+        }
 
         @if (!ViewData.ModelState.IsValid)
         {
@@ -67,7 +73,7 @@
                 </div>
 
                 <button class="btn btn-solid" type="submit" id="payBtn">
-                    Перейти к оплате — @((cart.Total / 100).ToString("0")) ₽
+                    @(Payments.IsConfigured ? "Перейти к оплате" : "Оформить демо-заказ") — @((cart.Total / 100).ToString("0")) ₽
                 </button>
             </form>
 
@@ -100,8 +106,9 @@
                 </div>
 
                 <p class="muted" style="font-size:.8rem;margin-top:1.4rem;">
-                    Оплата проходит через защищённую страницу ЮKassa.
-                    Данные карты вводятся на стороне платёжной системы — мы их не видим.
+                    @(Payments.IsConfigured
+                        ? "Оплата проходит через защищённую страницу ЮKassa. Данные карты вводятся на стороне платёжной системы — мы их не видим."
+                        : "Это демонстрационный режим. Данные карты не запрашиваются, реальный платёж не создаётся.")
                 </p>
 
                 <div class="pay-logos">
@@ -126,6 +133,7 @@
             var deliveryRow = document.getElementById('deliveryRow');
             var addressField = document.getElementById('addressField');
             var payBtn = document.getElementById('payBtn');
+            var paymentConfigured = @(Payments.IsConfigured ? "true" : "false");
 
             function rub(v) {
                 return Math.round(v).toLocaleString('ru-RU') + ' ₽';
@@ -139,7 +147,7 @@
                 deliveryRow.hidden = !isDelivery;
                 addressField.hidden = !isDelivery;
                 totalCell.textContent = rub(total);
-                payBtn.textContent = 'Перейти к оплате — ' + rub(total);
+                payBtn.textContent = (paymentConfigured ? 'Перейти к оплате — ' : 'Оформить демо-заказ — ') + rub(total);
 
                 document.querySelectorAll('.delivery-tabs label').forEach(function (label) {
                     label.classList.toggle('checked', label.contains(chosen));
