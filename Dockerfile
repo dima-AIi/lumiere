@@ -9,6 +9,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app .
 ENV ASPNETCORE_ENVIRONMENT=Production
+ENV TZ=Europe/Moscow
 USER $APP_UID
 EXPOSE 10000
 ENTRYPOINT ["dotnet", "Lumiere.dll"]

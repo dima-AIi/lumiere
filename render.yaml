@@ -13,6 +13,8 @@ services:
     envVars:
       - key: ASPNETCORE_ENVIRONMENT
         value: Production
+      - key: TZ
+        value: Europe/Moscow
       - key: DATABASE_URL
         sync: false
       - key: Admin__Password
