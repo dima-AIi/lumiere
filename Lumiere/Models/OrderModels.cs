@@ -5,6 +5,8 @@ namespace Lumiere.Models;
 /// <summary>Данные формы оформления заказа.</summary>
 public class CheckoutForm
 {
+    [StringLength(36)]
+    public string? SubmissionId { get; set; }
     // Поля nullable намеренно: иначе MVC считает их обязательными по умолчанию
     // и показывает лишние ошибки вроде «The Comment field is required».
     // Обязательность и формат проверяем сами (см. HomeController.Checkout).
@@ -145,6 +147,7 @@ public class AdminMenuItemViewModel
     public string Name { get; set; } = "";
 
     [Required(ErrorMessage = "Укажите цену")]
+    [Microsoft.AspNetCore.Mvc.ModelBinder(BinderType = typeof(DecimalPriceBinder))]
     [Range(0.01, 1_000_000, ErrorMessage = "Цена должна быть больше нуля")]
     public decimal PriceRubles { get; set; }            // рубли для формы; при сохранении → копейки (×100)
 

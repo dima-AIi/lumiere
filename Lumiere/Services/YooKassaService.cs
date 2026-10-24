@@ -44,7 +44,7 @@ public class YooKassaService
             return new PaymentResult { Success = true, DemoMode = true, PaymentId = Guid.NewGuid().ToString() };
         }
 
-        var idempotence = Guid.NewGuid().ToString();
+        var idempotence = orderId;
         var payload = new Dictionary<string, object?>
         {
             ["amount"] = new Dictionary<string, string>

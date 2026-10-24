@@ -67,7 +67,7 @@
                             <button class="btn btn-danger btn-sm" type="submit">Отклонить</button>
                         </form>
                     </div>
-                    <a class="admin-card-open" href="/Admin/OrderDetails/@o.Id">Подробнее →</a>
+                    <a class="admin-card-open" href="@Context.Request.PathBase/Admin/OrderDetails/@o.Id">Подробнее →</a>
                 </article>
             }
         </div>
@@ -109,7 +109,7 @@
                             <td class="num">@((o.Total / 100).ToString("0")) ₽</td>
                             <td><span class="pill pay-@o.PaymentStatus">@Pay(o.PaymentStatus)</span></td>
                             <td><span class="pill kitchen-@o.OrderStatus">@Kitchen(o.OrderStatus)</span></td>
-                            <td class="num"><a class="link-open" href="/Admin/OrderDetails/@o.Id">Открыть →</a></td>
+                            <td class="num"><a class="link-open" href="@Context.Request.PathBase/Admin/OrderDetails/@o.Id">Открыть →</a></td>
                         </tr>
                     }
                 </tbody>

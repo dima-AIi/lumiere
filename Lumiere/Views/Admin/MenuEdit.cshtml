@@ -11,7 +11,7 @@
         <div class="rule"></div>
     </div>
 
-    <a class="link-back" href="/Admin/Menu">← Назад к меню</a>
+    <a class="link-back" href="@Context.Request.PathBase/Admin/Menu">← Назад к меню</a>
 
     <form asp-controller="Admin" asp-action="@(isEdit ? "MenuItemEdit" : "MenuItemCreate")" method="post"
           enctype="multipart/form-data" class="admin-panel admin-form">
@@ -73,7 +73,7 @@
                 <label>Фото блюда @(isEdit ? "" : "*")</label>
                 <input type="file" name="photo" accept=".jpg,.jpeg,image/jpeg" class="input" onchange="previewPhoto(this)" @(isEdit ? "" : "required") />
                 <p class="muted small" style="margin-top:.4rem;">
-                    Обязательный формат <b>JPEG</b> (расширение .jpg). До <b>5 МБ</b>.
+                    Обязательный формат <b>JPEG</b> (расширение .jpg). До <b>3 МБ</b>.
                     Лучший размер — <b>квадрат 800×800 px</b> (как все фото на витрине сайта). Минимум 400×400 px.
                 </p>
                 <span class="field-error">@(ViewData.ModelState["photo"]?.Errors.FirstOrDefault()?.ErrorMessage)</span>
@@ -87,7 +87,7 @@
                 <span class="muted small">Текущее фото:</span>
                 @if (!string.IsNullOrEmpty(Model.CurrentImg))
                 {
-                    <img id="photoPreview" src="/img/@Model.CurrentImg" alt="Текущее фото" class="admin-photo-preview" />
+                    <img id="photoPreview" src="@((Model.CurrentImg.StartsWith("upload-") ? "/media/" : "/img/") + Model.CurrentImg)" alt="Текущее фото" class="admin-photo-preview" />
                     <label class="admin-photo-remove">
                         <input type="checkbox" name="removePhoto" value="true" />
                         <span>Удалить текущее фото</span>
@@ -103,7 +103,7 @@
 
         <div class="admin-form-actions">
             <button type="submit" class="btn btn-gold">@(isEdit ? "Сохранить" : "Создать позицию")</button>
-            <a href="/Admin/Menu" class="btn">Отмена</a>
+            <a href="@Context.Request.PathBase/Admin/Menu" class="btn">Отмена</a>
         </div>
     </form>
 </div>

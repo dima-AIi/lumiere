@@ -56,6 +56,16 @@ public class CartService
         // Стоимость доставки всегда актуальна из меню — иначе после перезагрузки
         // страницы корзина «забывает» про доставку.
         cart.DeliveryPrice = _menu.Get().DeliveryPrice;
+        // The server owns availability and prices; browser/session values are never authoritative.
+        var currentMenu = _menu.Get();
+        cart.Lines.RemoveAll(line => currentMenu.AllItems.All(item => item.Id != line.Id));
+        foreach (var line in cart.Lines)
+        {
+            var current = currentMenu.AllItems.First(item => item.Id == line.Id);
+            line.Price = current.Price;
+            line.Name = current.Name;
+            line.Img = current.Img;
+        }
         return cart;
     }
 

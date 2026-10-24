@@ -48,6 +48,7 @@ document.querySelectorAll('video[autoplay]').forEach(function (v) {
 document.addEventListener('submit', function (e) {
     var form = e.target;
     if (!form.classList || !form.classList.contains('add-to-cart')) return;
+    if (window.LUMIERE_STATIC) return;
     e.preventDefault();
 
     fetch(form.action, {
@@ -76,6 +77,7 @@ document.addEventListener('submit', function (e) {
 // Фокус остаётся в строке поиска, страница не скроллится наверх.
 (function () {
     var searchForm = document.getElementById('menu-search');
+    if (window.LUMIERE_STATIC) return;
     if (!searchForm) return;
 
     var input = searchForm.querySelector('input[name="q"]');

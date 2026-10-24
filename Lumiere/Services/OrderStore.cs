@@ -45,18 +45,23 @@ public class OrderStore
 {
     private readonly string _file;
     private readonly ILogger<OrderStore> _log;
+    private readonly PostgresState _database;
     private static readonly object Gate = new();
 
-    public OrderStore(IWebHostEnvironment env, ILogger<OrderStore> log)
+    public OrderStore(IWebHostEnvironment env, ILogger<OrderStore> log, PostgresState database)
     {
         _log = log;
+        _database = database;
         var dir = Path.Combine(env.ContentRootPath, "App_Data");
-        Directory.CreateDirectory(dir);
+        if (!database.Enabled) Directory.CreateDirectory(dir);
         _file = Path.Combine(dir, "orders.json");
     }
 
     public IReadOnlyList<Order> All()
     {
+        if (_database.Enabled)
+            return JsonSerializer.Deserialize<List<Order>>(_database.GetDocument("orders") ?? "[]")
+                ?? throw new InvalidDataException("Invalid order document.");
         lock (Gate)
         {
             if (!File.Exists(_file))
@@ -68,10 +73,7 @@ public class OrderStore
             {
                 return JsonSerializer.Deserialize<List<Order>>(File.ReadAllText(_file)) ?? new List<Order>();
             }
-            catch (JsonException)
-            {
-                return Array.Empty<Order>();
-            }
+            catch (JsonException ex) { throw new InvalidDataException("Invalid orders file; original data preserved.", ex); }
         }
     }
 
@@ -86,7 +88,12 @@ public class OrderStore
             Lines = cart.Lines
         };
 
-        Mutate(all => all.Add(order));
+        Mutate(all =>
+        {
+            var existing = string.IsNullOrEmpty(form.SubmissionId) ? null : all.FirstOrDefault(o => o.Form.SubmissionId == form.SubmissionId);
+            if (existing is not null) order = existing;
+            else all.Add(order);
+        });
 
         _log.LogInformation("Сохранён заказ {Id} ({Lines} поз.)", order.Id, order.Lines.Count);
         return order;
@@ -218,6 +225,7 @@ public class OrderStore
 
     private void Mutate(Action<List<Order>> change)
     {
+        if (_database.Enabled) { _database.MutateOrders(change); return; }
         lock (Gate)
         {
             var all = new List<Order>();
@@ -227,10 +235,7 @@ public class OrderStore
                 {
                     all = JsonSerializer.Deserialize<List<Order>>(File.ReadAllText(_file)) ?? new List<Order>();
                 }
-                catch (JsonException)
-                {
-                    // повреждённый файл — начинаем заново
-                }
+                catch (JsonException ex) { throw new InvalidDataException("Invalid orders file; refusing to overwrite original data.", ex); }
             }
 
             change(all);

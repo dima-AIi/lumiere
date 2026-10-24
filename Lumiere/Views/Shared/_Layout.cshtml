@@ -12,7 +12,7 @@
     <title>@(ViewData["Title"] ?? "Lumière — десерты и кофе")</title>
     <meta name="description" content="Lumière — десерты и кофе в Армавире. Свежая выпечка, европейская кухня, доставка." />
     <link rel="icon" href="/img/logo.svg" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
     <script>
         // Приветственный экран — только при первом визите (флаг в localStorage).
         // Класс на <html> решает, рисовать ли прелоадер, ещё до отрисовки body —
@@ -121,7 +121,7 @@
         const nav = document.getElementById('nav');
         burger?.addEventListener('click', () => nav.classList.toggle('open'));
     </script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

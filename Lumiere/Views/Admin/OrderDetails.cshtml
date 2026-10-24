@@ -7,7 +7,7 @@
 }
 
 <div class="admin-page">
-    <a class="link-back" href="/Admin/Orders">← Ко всем заказам</a>
+    <a class="link-back" href="@Context.Request.PathBase/Admin/Orders">← Ко всем заказам</a>
 
     <div class="section-head">
         <span class="eyebrow">@Model.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</span>

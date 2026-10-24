@@ -15,33 +15,35 @@ public class MenuRepository
 
     private readonly IWebHostEnvironment _env;
     private readonly ILogger<MenuRepository> _log;
+    private readonly PostgresState _database;
     private MenuData? _cache;
 
-    public MenuRepository(IWebHostEnvironment env, ILogger<MenuRepository> log)
+    public MenuRepository(IWebHostEnvironment env, ILogger<MenuRepository> log, PostgresState database)
     {
         _env = env;
         _log = log;
+        _database = database;
     }
 
     public MenuData Get()
     {
-        if (_cache is not null)
+        if (!_database.Enabled && _cache is not null)
         {
             return _cache;
         }
 
         var path = Path.Combine(_env.ContentRootPath, "wwwroot", "data", "menu.json");
-        var json = File.ReadAllText(path);
+        var json = _database.Enabled ? _database.GetDocument("menu") ?? throw new InvalidDataException("Menu has not been initialized.") : File.ReadAllText(path);
         var data = JsonSerializer.Deserialize<MenuData>(json, JsonOptions) ?? new MenuData();
 
         // В исходном API цены указаны в рублях, а модель и платёжный шлюз работают
         // в копейках — приводим к копейкам один раз при загрузке.
         foreach (var item in data.AllItems)
         {
-            item.Price = Math.Round(item.Price, MidpointRounding.AwayFromZero) * 100;
+            item.Price = Math.Round(item.Price * 100, MidpointRounding.AwayFromZero);
         }
 
-        data.DeliveryPrice = Math.Round(data.DeliveryPrice, MidpointRounding.AwayFromZero) * 100;
+        data.DeliveryPrice = Math.Round(data.DeliveryPrice * 100, MidpointRounding.AwayFromZero);
 
         _cache = data;
         _log.LogInformation("Меню загружено: {Count} позиций", data.AllItems.Count());
@@ -137,7 +139,8 @@ public class MenuRepository
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
-            File.WriteAllText(MenuFilePath, json);
+            if (_database.Enabled) _database.SaveDocument("menu", json);
+            else File.WriteAllText(MenuFilePath, json);
 
             // Кэш теперь содержит актуальные данные (в копейках) — обновляем,
             // чтобы изменения были видны сразу, без перезапуска сервера.

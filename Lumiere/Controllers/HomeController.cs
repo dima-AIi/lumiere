@@ -138,19 +138,32 @@ public class HomeController : Controller
         }
 
         ViewBag.Menu = _menu.Get();
-        return View(new CheckoutForm { DeliveryType = cart.DeliveryType });
+        var submissionId = HttpContext.Session.GetString("lumiere.checkout-submission");
+        if (submissionId is null)
+        {
+            submissionId = Guid.NewGuid().ToString();
+            HttpContext.Session.SetString("lumiere.checkout-submission", submissionId);
+        }
+        return View(new CheckoutForm { DeliveryType = cart.DeliveryType, SubmissionId = submissionId });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Checkout(CheckoutForm form)
     {
+        if (string.IsNullOrEmpty(form.SubmissionId) || form.SubmissionId != HttpContext.Session.GetString("lumiere.checkout-submission"))
+            return BadRequest("Форма устарела. Откройте оформление заказа заново.");
         var cart = _cart.Get();
         if (cart.Count == 0)
         {
             return RedirectToAction(nameof(CartPage));
         }
 
+        if (!ModelState.IsValid)
+        {
+            ViewBag.Menu = _menu.Get();
+            return View(form);
+        }
         if (string.IsNullOrWhiteSpace(form.Name))
         {
             ModelState.AddModelError(string.Empty, "Укажите, как к вам обращаться.");
@@ -190,8 +203,8 @@ public class HomeController : Controller
         // Сохраняем заказ: сюда же подключается запись в базу/1С/уведомление в Telegram.
         var order = _orderStore.Save(form, cart);
         _logger.LogInformation(
-            "Заказ {Id} на {Total} руб. ({Delivery}), тел. {Phone}",
-            order.Id, cart.Total / 100.0, form.DeliveryType, form.Phone);
+            "Заказ {Id} на {Total} руб. ({Delivery})",
+            order.Id, cart.Total / 100.0, form.DeliveryType);
 
         var result = await _payment.CreatePaymentAsync(cart, form, order.Id, HttpContext.RequestAborted);
         if (!result.Success
@@ -207,6 +220,7 @@ public class HomeController : Controller
 
         if (result.DemoMode)
         {
+            HttpContext.Session.Remove("lumiere.checkout-submission");
             _cart.Clear();
             _cart.ClearPendingPayment();
             _orderStore.SetPayment(order.Id, result.PaymentId, "demo", paid: true);

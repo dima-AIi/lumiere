@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: lumiere-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    repo: https://github.com/dima-AIi/lumiere
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: DATABASE_URL
+        sync: false
+      - key: Admin__Password
+        generateValue: true
+      - key: YooKassa__ReturnUrl
+        sync: false

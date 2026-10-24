@@ -8,14 +8,20 @@
 <section>
     <div class="wrap" style="max-width:640px;text-align:center;">
         <div class="section-head">
-            <span class="eyebrow">Оплата прошла</span>
+            <span class="eyebrow">@(order?.IsDemo == true ? "Демонстрационный заказ" : "Оплата прошла")</span>
             <h1 class="h2">Спасибо за заказ</h1>
             <div class="rule"></div>
         </div>
 
         <p class="muted" style="margin-bottom:2rem;">
-            Платёж успешно проведён. Мы уже начали готовить — о готовности сообщим
-            по телефону, указанному при оформлении.
+            @if (order?.IsDemo == true)
+            {
+                <text>Это учебный демонстрационный заказ. Реальная оплата не проводилась, деньги не списаны.</text>
+            }
+            else
+            {
+                <text>Платёж успешно проведён. О готовности сообщим по телефону, указанному при оформлении.</text>
+            }
         </p>
 
         @if (!string.IsNullOrEmpty(orderId))
@@ -58,3 +64,6 @@
         </div>
     </div>
 </section>
+@section Scripts {
+    <script>try { localStorage.removeItem('lumiere.cart.v1'); } catch (e) { }</script>
+}

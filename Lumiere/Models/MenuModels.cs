@@ -20,7 +20,7 @@ public class MenuItem
     public double PriceRubles => Price / 100.0;
 
     [JsonIgnore]
-    public string ImgUrl => string.IsNullOrEmpty(Img) ? "/img/placeholder.svg" : "/img/" + Img;
+    public string ImgUrl => string.IsNullOrEmpty(Img) ? "/img/placeholder.svg" : (Img.StartsWith("upload-") ? "/media/" : "/img/") + Img;
 
     [JsonIgnore]
     public string WeightText => Weight.HasValue ? $"{Weight} г" : "";
@@ -61,7 +61,7 @@ public class CartLine
     public int Qty { get; set; }
 
     public double Sum => Price * Qty;
-    public string ImgUrl => string.IsNullOrEmpty(Img) ? "/img/placeholder.svg" : "/img/" + Img;
+    public string ImgUrl => string.IsNullOrEmpty(Img) ? "/img/placeholder.svg" : (Img.StartsWith("upload-") ? "/media/" : "/img/") + Img;
 }
 
 /// <summary>Корзина целиком.</summary>

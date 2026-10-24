@@ -27,6 +27,7 @@
         <div class="cart-layout">
             <form asp-controller="Home" asp-action="Checkout" method="post" autocomplete="off">
                 @Html.AntiForgeryToken()
+                <input asp-for="SubmissionId" type="hidden" />
 
                 <div class="field">
                     <label asp-for="Name">Имя</label>

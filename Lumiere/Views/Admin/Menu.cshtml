@@ -26,7 +26,7 @@
             <div class="kv"><span>Город</span><b>@Model.City</b></div>
         </div>
         <div class="admin-panel" style="display:flex;flex-direction:column;justify-content:center;gap:.9rem;">
-            <a class="btn btn-gold" href="/Admin/MenuItemCreate">＋ Добавить позицию</a>
+            <a class="btn btn-gold" href="@Context.Request.PathBase/Admin/MenuItemCreate">＋ Добавить позицию</a>
             <p class="muted" style="font-size:.8rem;line-height:1.5;margin:0;">
                 Можно создать и новую категорию прямо в форме позиции — просто впишите её название.
             </p>
@@ -72,7 +72,7 @@
                                         <span class="muted">@item.WeightText</span>
                                     }
                                     <div class="admin-cat-actions" style="margin-top:.35rem;gap:.8rem;">
-                                        <a class="link-open" href="/Admin/MenuItemEdit/@item.Id">Изменить</a>
+                                        <a class="link-open" href="@Context.Request.PathBase/Admin/MenuItemEdit/@item.Id">Изменить</a>
                                         <form asp-controller="Admin" asp-action="MenuItemDelete" method="post" class="admin-inline-del"
                                               onsubmit="return confirm('Удалить позицию «@(item.Name.Replace("'", "\\'"))»?');">
                                             @Html.AntiForgeryToken()

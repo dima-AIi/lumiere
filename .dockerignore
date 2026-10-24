@@ -1,0 +1,13 @@
+**/bin
+**/obj
+**/node_modules
+**/App_Data
+.git
+.vs
+.vercel
+.env*
+dist
+artifacts
+shots
+*.zip
+*.log

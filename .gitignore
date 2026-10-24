@@ -55,8 +55,6 @@ project.lock.json
 /_menu.backup.json
 /_menu_rendered.html
 /index_raw.html
-/package.json
-/package-lock.json
 /banner_check.js
 /diag.js
 /diag_menu.js
@@ -69,3 +67,17 @@ project.lock.json
 
 # ---------- Служебная папка ассистента ----------
 /.workbuddy-ai/
+
+# Hosting secrets and generated public build
+.env
+.env.*
+!.env.example
+.vercel/
+.neon
+dist/
+.dotnet/
+/package-lock.json
+*.pem
+*.pfx
+.vercel
+.env*

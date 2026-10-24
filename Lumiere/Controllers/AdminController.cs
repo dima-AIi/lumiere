@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Lumiere.Filters;
 using Lumiere.Models;
 using Lumiere.Services;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Lumiere.Controllers;
 
@@ -17,13 +18,15 @@ public class AdminController : Controller
     private readonly MenuRepository _menu;
     private readonly IConfiguration _config;
     private readonly ILogger<AdminController> _logger;
+    private readonly PostgresState _database;
 
-    public AdminController(OrderStore orderStore, MenuRepository menu, IConfiguration config, ILogger<AdminController> logger)
+    public AdminController(OrderStore orderStore, MenuRepository menu, IConfiguration config, ILogger<AdminController> logger, PostgresState database)
     {
         _orderStore = orderStore;
         _menu = menu;
         _config = config;
         _logger = logger;
+        _database = database;
     }
 
     // ---------- Корень админки: уводим на обзор ----------
@@ -42,6 +45,7 @@ public class AdminController : Controller
     [HttpPost]
     [AllowAdminAnonymous]
     [ValidateAntiForgeryToken]
+    [EnableRateLimiting("admin-login")]
     public IActionResult Login(string password, string? returnUrl)
     {
         var expected = _config["Admin:Password"] ?? "";
@@ -413,10 +417,10 @@ public class AdminController : Controller
             return (null, null);
         }
 
-        const long maxSize = 5 * 1024 * 1024; // 5 МБ
+        const long maxSize = 3 * 1024 * 1024;
         if (photo.Length > maxSize)
         {
-            return (null, "Файл слишком большой (максимум 5 МБ).");
+            return (null, "Файл слишком большой (максимум 3 МБ).");
         }
 
         var ext = Path.GetExtension(photo.FileName).ToLowerInvariant();
@@ -449,6 +453,12 @@ public class AdminController : Controller
         }
 
         var name = Guid.NewGuid().ToString("N")[..16] + ext;
+        if (_database.Enabled)
+        {
+            name = "upload-" + Guid.NewGuid().ToString("N") + ".jpg";
+            await _database.SaveImageAsync(name, ms.ToArray(), HttpContext.RequestAborted);
+            return (name, null);
+        }
         var dir = _menu.ImgFolder;
         Directory.CreateDirectory(dir);
         var path = Path.Combine(dir, name);

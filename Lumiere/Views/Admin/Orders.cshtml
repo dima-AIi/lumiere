@@ -53,7 +53,7 @@
         </select>
 
         <button class="btn btn-gold btn-sm" type="submit">Найти</button>
-        <a class="btn btn-sm" href="/Admin/Orders">Сбросить</a>
+        <a class="btn btn-sm" href="@Context.Request.PathBase/Admin/Orders">Сбросить</a>
     </form>
 
     @if (Model.Orders.Count == 0)
@@ -113,7 +113,7 @@
                                 }
                                 else
                                 {
-                                    <a class="link-open" href="/Admin/OrderDetails/@o.Id">Открыть →</a>
+                                    <a class="link-open" href="@Context.Request.PathBase/Admin/OrderDetails/@o.Id">Открыть →</a>
                                 }
                             </td>
                         </tr>
