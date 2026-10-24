@@ -77,6 +77,8 @@ project.lock.json
 dist/
 .dotnet/
 /package-lock.json
+/homepage.html
+/admin_check.html
 *.pem
 *.pfx
 .vercel

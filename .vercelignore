@@ -9,11 +9,11 @@
 .neon
 artifacts
 shots
-data
-src
-tools
-_testimg
-dist
+/data
+/src
+/tools
+/_testimg
+/dist
 *.zip
 *.log
 *.err
