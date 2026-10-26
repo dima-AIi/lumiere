@@ -1,7 +1,5 @@
-﻿@inject Lumiere.Services.CartService Cart
-@{
+﻿@{
     var menu = ViewBag.Menu as Lumiere.Models.MenuData;
-    var cart = Cart.Get();
     var current = ViewContext.RouteData.Values["action"]?.ToString();
 }
 <!DOCTYPE html>
@@ -13,25 +11,14 @@
     <meta name="description" content="Lumière — десерты и кофе в Армавире. Свежая выпечка, европейская кухня, доставка." />
     <link rel="icon" href="/img/logo.svg" />
     <link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
-    <script>
-        // Приветственный экран — только при первом визите (флаг в localStorage).
-        // Класс на <html> решает, рисовать ли прелоадер, ещё до отрисовки body —
-        // так на обычных переходах (меню, корзина) его не видно вообще, без вспышки.
-        (function () {
-            var force = /[?&]welcome\b/.test(location.search);
-            var seen = false;
-            try { seen = localStorage.getItem('lumiere_welcome') === '1'; }
-            catch (e) { seen = ('; ' + document.cookie).indexOf('; lumiere_welcome=1') > -1; }
-            if (force || !seen) document.documentElement.classList.add('show-welcome');
-        })();
-    </script>
+    <script src="/js/site-init.js"></script>
 </head>
 <body>
     <div class="preloader" id="preloader" aria-hidden="true">
         <div class="preloader-in">
             <div class="preloader-welcome">
                 <span class="preloader-title">Добро пожаловать!</span>
-                <p class="preloader-text">Повара уже на низком старте и ждут ваших заказов</p>
+                <p class="preloader-text">Познакомьтесь с меню нашей учебной кофейни</p>
             </div>
         </div>
     </div>
@@ -61,11 +48,13 @@
                 <a href="/Home/Menu">Меню</a>
                 <a href="/Home/Contacts">Контакты</a>
                 <a class="cart-pill" href="/Home/CartPage">
-                    Корзина <span class="cart-count">@cart.Count</span>
+                    Корзина <span class="cart-count">0</span>
                 </a>
             </nav>
         </div>
     </header>
+
+    <aside class="demo-banner" role="note"><div class="wrap">Учебная витрина: можно собрать демозаказ. Настоящих заказов, регистрации и оплаты нет.</div></aside>
 
     <main>
         @RenderBody()
@@ -80,12 +69,7 @@
                         Кафе десертов и кофе. Выпечку печём каждое утро, зёрна обжариваем
                         собственного обжарщика и подаём всё, под чем хочется задержаться подольше.
                     </p>
-                    <div class="pay-logos">
-                        <span class="pay-logo">МИР</span>
-                        <span class="pay-logo">Visa</span>
-                        <span class="pay-logo">Mastercard</span>
-                        <span class="pay-logo">СБП</span>
-                    </div>
+
                 </div>
                 <div>
                     <h4><a href="/Home/Menu">Меню</a></h4>
@@ -99,7 +83,7 @@
                 <div>
                     <h4>Контакты</h4>
                     <ul class="foot-list">
-                        <li><a href="tel:@(menu?.Phone)">@menu?.Phone</a></li>
+                        <li><span>Контакты кафе — демонстрационные</span></li>
                         <li><a href="/Home/Contacts">@menu?.Address</a></li>
                         <li><span>@menu?.WorkStart — @menu?.WorkEnd</span></li>
                     </ul>
@@ -108,20 +92,14 @@
             <div class="foot-bottom">
                 <span>© @DateTime.Now.Year Lumière. Учебный проект.</span>
                 <span>
-                    <a href="/Admin">Панель управления</a> ·
-                    <a href="/Home/Privacy">Политика конфиденциальности</a> ·
-                    Оплата через ЮKassa
+                    <a href="/Home/Privacy">О демоверсии и данных</a>
                 </span>
             </div>
         </div>
     </footer>
 
-    <script>
-        const burger = document.getElementById('burger');
-        const nav = document.getElementById('nav');
-        burger?.addEventListener('click', () => nav.classList.toggle('open'));
-    </script>
     <script src="/js/site.js" asp-append-version="true"></script>
+    <script src="/js/public.js" asp-append-version="true" defer></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

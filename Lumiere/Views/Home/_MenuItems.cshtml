@@ -53,11 +53,7 @@ else
                                     }
                                     <div class="card-foot">
                                         <span class="price">@item.PriceRubles.ToString("0") <small>₽</small></span>
-                                        <form asp-controller="Home" asp-action="AddToCart" method="post" class="add-to-cart">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="id" value="@item.Id" />
-                                            <button class="btn btn-gold btn-sm" type="submit">В корзину</button>
-                                        </form>
+                                        <button class="btn btn-gold btn-sm" type="button" data-add="@item.Id">В корзину</button>
                                     </div>
                                 </div>
                             </article>

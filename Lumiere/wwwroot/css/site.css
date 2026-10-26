@@ -534,3 +534,16 @@ html.show-welcome .preloader{display:flex;}
     .admin-detail{grid-template-columns:1fr;}
     .admin-panel:nth-child(4){grid-column:auto;}
 }
+
+/* Public demonstration: no visitor account or personal-data form. */
+.demo-banner{background:var(--cream-2);border-bottom:1px solid var(--line);color:var(--ink-soft);font-size:.8rem;line-height:1.65;padding:10px 0;text-align:center;}
+.demo-description{color:var(--ink-soft);line-height:1.9;margin:1.8rem 0;}
+.demo-description p{margin:1rem 0;}
+.demo-description h2{margin-top:2rem;}
+.demo-summary{margin-top:2rem;}
+.demo-summary .sum-row{gap:24px;}
+.demo-summary .sum-row>span:last-child{white-space:nowrap;}
+.demo-back{display:block;text-align:center;margin-top:1.2rem;}
+.demo-success{border:1px solid var(--line);background:var(--paper);padding:2.5rem;margin-top:2rem;}
+.demo-success p{margin:1.3rem 0 2rem;}
+[hidden]{display:none!important;}

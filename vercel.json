@@ -4,22 +4,35 @@
   "buildCommand": "bash scripts/vercel-build.sh",
   "outputDirectory": "dist",
   "cleanUrls": true,
-  "functions": { "api/index.mjs": { "maxDuration": 90 } },
-  "rewrites": [
-    { "source": "/api/catalog", "destination": "/api/index?__path=api/catalog" },
-    { "source": "/media/:name", "destination": "/api/index?__path=media/:name" },
-    { "source": "/backend/:path*", "destination": "/api/index?__path=backend/:path*" }
+  "rewrites": [],
+  "redirects": [
+    {
+      "source": "/Home/Index",
+      "destination": "/",
+      "permanent": true
+    }
   ],
-  "redirects": [{ "source": "/Home/Index", "destination": "/", "permanent": true }],
   "headers": [
-    { "source": "/(backend|api)/:path*", "headers": [
-      { "key": "Cache-Control", "value": "private, no-store, max-age=0" },
-      { "key": "CDN-Cache-Control", "value": "no-store" },
-      { "key": "Vercel-CDN-Cache-Control", "value": "no-store" }
-    ]},
-    { "source": "/:path*", "headers": [
-      { "key": "X-Content-Type-Options", "value": "nosniff" },
-      { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-    ]}
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "X-Lumiere-Mode",
+          "value": "static-demo"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; media-src 'self'; connect-src 'self'; form-action 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'"
+        }
+      ]
+    }
   ]
 }

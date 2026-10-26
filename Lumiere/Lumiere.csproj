@@ -9,8 +9,6 @@
   <ItemGroup>
     <Content Remove="App_Data\**" />
     <None Remove="App_Data\**" />
-    <PackageReference Include="Npgsql" Version="10.0.3" />
-    <Content Include="Migrations\*.sql" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

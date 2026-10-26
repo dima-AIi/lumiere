@@ -15,9 +15,3 @@ services:
         value: Production
       - key: TZ
         value: Europe/Moscow
-      - key: DATABASE_URL
-        sync: false
-      - key: Admin__Password
-        generateValue: true
-      - key: YooKassa__ReturnUrl
-        sync: false

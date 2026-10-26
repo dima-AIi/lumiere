@@ -2,10 +2,10 @@
 (() => {
   'use strict';
   if (!window.LUMIERE_STATIC) return;
-  const key = 'lumiere.cart.v1';
+  const key = 'lumiere.cart.demo.v2';
   const esc = text => String(text ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const rub = value => Number(value).toLocaleString('ru-RU',{maximumFractionDigits:2})+' ₽';
-  const image = item => '/'+(item.img?.startsWith('upload-') ? 'media/' : 'img/')+encodeURIComponent(item.img || 'placeholder.svg');
+  const image = item => '/img/'+encodeURIComponent(item.img || 'placeholder.svg');
   let catalog;
   let state = { lines:[], deliveryType:'pickup' };
   try {
@@ -28,17 +28,14 @@
   const initial = fetch('/data/menu.json').then(r => { if (!r.ok) throw Error(); return r.json(); }).then(data => {
     if (!validCatalog(data)) throw Error(); catalog=data; refresh(); return data;
   }).catch(() => { notice('Не удалось загрузить меню. Обновите страницу.'); return null; });
-  // Refresh public content via Vercel/Neon; never wait for Render to show the site.
-  initial.then(() => fetch('/api/catalog',{cache:'no-store',signal:AbortSignal.timeout(15000)}))
-    .then(r => r.ok ? r.json() : null).then(data => { if (validCatalog(data)) { catalog=data; refresh(); } }).catch(() => {});
   const items = () => catalog.categories.flatMap(c => c.items);
   const find = id => items().find(i => i.id === id);
-  function refresh() { badge(); renderMenu(); renderCart(); }
+  function refresh() { badge(); renderMenu(); renderCart(); renderDemo(); }
   function renderMenu() {
     const results = document.getElementById('menu-results');
     if (!results || !catalog) return;
     const form = document.getElementById('menu-search');
-    const field = form.querySelector('[name=q]');
+    const field = form.querySelector('[data-query]');
     if (!field.dataset.initialized) { field.value=new URLSearchParams(location.search).get('q') || ''; field.dataset.initialized='1'; }
     const query = field.value.trim().toLocaleLowerCase('ru-RU');
     const categories = catalog.categories.map(category => ({...category,items:category.items.filter(item =>
@@ -50,7 +47,7 @@
       `<div class="cat-block" id="category-${i}"><div class="cat-title"><h2>${esc(c.title)}</h2><span>${c.items.length} позиций</span></div><div class="grid">${c.items.map(item =>
         `<article class="card"><div class="card-photo"><img src="${image(item)}" alt="${esc(item.name)}" loading="lazy">${item.weight ? `<span class="card-weight">${esc(item.weight)} г</span>` : ''}</div>
         <div class="card-body"><h3 class="card-name">${esc(item.name)}</h3>${item.desc ? `<p class="card-desc">${esc(item.desc)}</p>` : ''}<div class="card-foot"><span class="price">${rub(item.price)}</span>
-        <form class="add-to-cart"><input type="hidden" name="id" value="${esc(item.id)}"><button type="submit" class="btn btn-gold btn-sm">В корзину</button></form></div></div></article>`).join('')}</div></div>`).join('')}</div></div>`;
+        <button type="button" data-add="${esc(item.id)}" class="btn btn-gold btn-sm">В корзину</button></div></div></article>`).join('')}</div></div>`).join('')}</div></div>`;
   }
   function renderCart() {
     const cart = document.getElementById('public-cart');
@@ -67,29 +64,31 @@
     }).join('')}<button class="btn" data-clear-cart>Очистить корзину</button> <a class="btn" href="/Home/Menu">Продолжить выбирать</a></div>
     <aside class="summary"><h3>Итого</h3><div class="delivery-tabs"><button data-delivery="pickup" class="${delivery ? '' : 'active'}">Самовывоз · 0 ₽</button>
     <button data-delivery="delivery" class="${delivery ? 'active' : ''}">Доставка · ${rub(catalog.deliveryPrice)}</button></div>
-    <div class="sum-row"><span>Позиции</span><span>${rub(subtotal)}</span></div><div class="sum-row"><span>Доставка</span><span>${rub(delivery)}</span></div><div class="sum-row total"><span>К оплате</span><span>${rub(subtotal+delivery)}</span></div>
-    ${missing.length ? '' : '<a class="btn btn-solid btn-block" href="/Home/Checkout">Оформить заказ</a>'}
-    <p class="muted" style="margin-top:1rem">Корзина работает без сервера. При оформлении сервер проверит актуальные цены и наличие.</p></aside></div>`;
+    <div class="sum-row"><span>Позиции</span><span>${rub(subtotal)}</span></div><div class="sum-row"><span>Доставка</span><span>${rub(delivery)}</span></div><div class="sum-row total"><span>Демо-итог</span><span>${rub(subtotal+delivery)}</span></div>
+    ${missing.length ? '' : '<a class="btn btn-solid btn-block" href="/Home/Checkout">Посмотреть демозаказ</a>'}
+    <p class="muted" style="margin-top:1rem">Это пример заказа. Личные данные не нужны, настоящих заказов и списаний нет.</p></aside></div>`;
   }
-  document.addEventListener('submit',async event => {
-    const form=event.target;
-    if (form.matches('.add-to-cart')) {
-      event.preventDefault(); await initial; if (!catalog) return;
-      const id=new FormData(form).get('id');
-      if (!find(id)) { notice('Эта позиция больше недоступна. Проверьте меню.'); return; }
+  function search() {
+    renderMenu();
+  }
+  document.querySelector('#menu-search [data-query]')?.addEventListener('input',search);
+  document.querySelector('#menu-search-button')?.addEventListener('click',search);
+  document.querySelector('#menu-query')?.addEventListener('keydown',event => { if (event.key==='Enter') {event.preventDefault();search();} });
+  document.addEventListener('click',async event => {
+    const button=event.target.closest('button'); if (!button) return;
+    if (button.hasAttribute('data-add')) {
+      await initial; if (!catalog) return;
+      const id=button.dataset.add; if (!find(id)) return;
       const line=state.lines.find(l => l.id===id);
       if (line) line.qty=Math.min(99,line.qty+1); else if (state.lines.length<100) state.lines.push({id,qty:1});
-      save(); const button=form.querySelector('button'); const label=button.textContent;
-      button.textContent='В корзине ✓'; setTimeout(() => button.textContent=label,1200);
-    } else if (form.id==='menu-search') { event.preventDefault(); search(); }
-  });
-  function search() {
-    const q=document.querySelector('#menu-search [name=q]').value;
-    history.replaceState(null,'',q ? '/Home/Menu?q='+encodeURIComponent(q) : '/Home/Menu'); renderMenu();
-  }
-  document.querySelector('#menu-search [name=q]')?.addEventListener('input',search);
-  document.addEventListener('click',event => {
-    const button=event.target.closest('button'); if (!button) return;
+      save(); const label=button.textContent; button.textContent='В корзине ✓';
+      setTimeout(() => button.textContent=label,1200); return;
+    }
+    if (button.hasAttribute('data-demo-complete')) {
+      document.getElementById('demo-checkout').hidden=true;
+      document.getElementById('demo-complete').hidden=false;
+      return;
+    }
     if (button.hasAttribute('data-clear-cart')) state.lines=[];
     else if (button.hasAttribute('data-delivery')) state.deliveryType=button.dataset.delivery;
     else if (button.hasAttribute('data-qty')) {
@@ -99,42 +98,13 @@
     save(); renderCart();
   });
   window.addEventListener('storage',event => { if (event.key===key) location.reload(); });
-  badge();
-
-  const gate=document.getElementById('server-gate');
-  if (!gate) return;
-  const status=document.getElementById('server-status');
-  const retry=document.getElementById('server-retry');
-  let connecting=false;
-  const pause=ms => new Promise(resolve => setTimeout(resolve,ms));
-  async function connect() {
-    if (connecting) return; connecting=true; retry.hidden=true;
-    await initial;
-    if (gate.dataset.kind==='checkout' && !state.lines.length) { location.replace('/Home/CartPage'); return; }
-    status.textContent='Подключаем сервер… Корзина сохранена в этом браузере.';
-    const deadline=Date.now()+180000;
-    let ready=false;
-    while (Date.now()<deadline) {
-      try {
-        const response=await fetch('/backend/healthz',{cache:'no-store',signal:AbortSignal.timeout(9000)});
-        if (response.ok && response.headers.get('content-type')?.includes('application/json') && (await response.json()).ready) { ready=true; break; }
-      } catch { /* Render may be waking up. */ }
-      status.textContent='Сервер ещё запускается. На бесплатном тарифе это может занять минуту или дольше. Вы можете вернуться в меню.';
-      await pause(4000);
-    }
-    if (!ready) { status.textContent='Сервер пока недоступен. Заказ не отправлен; корзина сохранена. Попробуйте позже.'; retry.hidden=false; connecting=false; return; }
-    try {
-      if (gate.dataset.kind==='checkout') {
-        const session=await fetch('/backend/api/session',{cache:'no-store'});
-        if (!session.ok) throw Error('Не удалось начать защищённую сессию.');
-        const {token}=await session.json();
-        const response=await fetch('/backend/api/cart/import',{method:'POST',cache:'no-store',
-          headers:{'Content-Type':'application/json','X-CSRF-TOKEN':token},body:JSON.stringify(state)});
-        if (!response.ok) { const body=await response.json(); throw Error(body.error || 'Не удалось передать корзину.'); }
-        location.replace('/backend/Home/Checkout');
-      } else if (gate.dataset.kind==='payment') location.replace('/backend/Home/PaymentSuccess'+location.search);
-      else location.replace('/backend/Admin');
-    } catch(error) { status.textContent=error.message; retry.hidden=false; connecting=false; }
+  function renderDemo() {
+    const target=document.getElementById('demo-checkout'); if (!target || !catalog) return;
+    const lines=state.lines.filter(line => find(line.id));
+    if (!lines.length) {target.innerHTML='<div class="empty"><p>Сначала выберите блюда в меню.</p><a class="btn btn-gold" href="/Home/Menu">Открыть меню</a></div>';return;}
+    const subtotal=lines.reduce((sum,line)=>sum+find(line.id).price*line.qty,0);
+    const delivery=state.deliveryType==='delivery' ? catalog.deliveryPrice : 0;
+    target.innerHTML=`<div class="summary demo-summary"><h2 class="h3">Состав демозаказа</h2>${lines.map(line=>`<div class="sum-row"><span>${esc(find(line.id).name)} × ${line.qty}</span><span>${rub(find(line.id).price*line.qty)}</span></div>`).join('')}<div class="sum-row"><span>Доставка (демо)</span><span>${rub(delivery)}</span></div><div class="sum-row total"><span>Демо-итог</span><span>${rub(subtotal+delivery)}</span></div><button type="button" class="btn btn-solid btn-block" data-demo-complete>Завершить демонстрацию</button><a class="demo-back" href="/Home/CartPage">Изменить корзину</a></div>`;
   }
-  retry.addEventListener('click',connect); connect();
+  badge();
 })();

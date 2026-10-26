@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 
 namespace Lumiere.Services;
 
@@ -12,15 +11,12 @@ public static class PublicExporter
         var pages = new Dictionary<string, string>
         {
             ["/"] = "index.html", ["/Home/Menu"] = "Home/Menu.html",
-            ["/Home/Contacts"] = "Home/Contacts.html", ["/Home/Privacy"] = "Home/Privacy.html"
+            ["/Home/Contacts"] = "Home/Contacts.html", ["/Home/Privacy"] = "Home/Privacy.html",
+            ["/Home/CartPage"] = "Home/CartPage.html", ["/Home/Checkout"] = "Home/Checkout.html"
         };
         foreach (var (url, file) in pages)
         {
             var html = await client.GetStringAsync(url);
-            // A shared build must never contain session-bound request tokens.
-            html = Regex.Replace(html, "<input\\b[^>]*name=\"__RequestVerificationToken\"[^>]*>", "", RegexOptions.IgnoreCase);
-            html = html.Replace("<head>", "<head><script>window.LUMIERE_STATIC=true;</script>")
-                .Replace("</body>", "<script src=\"/js/public.js\" defer></script></body>");
             var target = Path.Combine(output, file);
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
             await File.WriteAllTextAsync(target, html);
