@@ -137,6 +137,8 @@
     document.getElementById('receipt-address').textContent=[catalog.address,catalog.city].filter(Boolean).join(', ');
     document.getElementById('receipt-items').innerHTML=order.lines.map(line=>`<div class="sum-row"><span>${esc(find(line.id).name)} × ${line.qty}</span><span>${rub(find(line.id).price*line.qty)}</span></div>`).join('');
     document.getElementById('receipt-total').textContent=rub(order.total);
+    state={lines:[],deliveryType:'pickup'};
+    save();
     input.value='';
     document.getElementById('demo-checkout').hidden=true;
     document.getElementById('demo-complete').hidden=false;
