@@ -39,7 +39,7 @@ else
                         {
                             <article class="card">
                                 <div class="card-photo">
-                                    <img src="@item.ImgUrl" alt="@item.Name" loading="lazy" />
+                                    <img src="@item.ImgUrl" alt="@item.Name" loading="eager" />
                                     @if (!string.IsNullOrEmpty(item.WeightText))
                                     {
                                         <span class="card-weight">@item.WeightText</span>

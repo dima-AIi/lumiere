@@ -1,6 +1,9 @@
-@{ ViewData["Title"] = "Демонстрация заказа — Lumière"; }
-<section><div class="wrap" style="max-width:900px;"><div class="section-head"><span class="eyebrow">Учебная витрина</span><h1 class="h2">Ваш демозаказ</h1><div class="rule"></div></div>
-<p class="demo-description">Посмотрите итог заказа без регистрации, телефона и адреса. Настоящие заказы не принимаются, деньги не списываются.</p>
-<div id="demo-checkout"><p>Для демонстрации нужен JavaScript.</p></div>
-<div id="demo-complete" class="demo-success" role="status" hidden><h2 class="h2">Готово — это демонстрация</h2><p>Вы прошли путь от меню до заказа. Ничего не отправлено в кафе или базу данных.</p><a class="btn btn-gold" href="/Home/Menu">Вернуться в меню</a></div>
-</div></section>
+@{ ViewData["Title"] = "Оформление заказа — Lumière"; }
+<section><div class="wrap" style="max-width:1100px;"><div class="section-head"><h1 class="h2">Оформление заказа</h1><div class="rule"></div></div>
+<div id="demo-checkout"><p class="muted">Загружаем состав заказа…</p></div>
+<section id="demo-complete" class="payment-success" role="status" aria-live="polite" hidden>
+<div class="payment-success-mark" aria-hidden="true">✓</div><h2 class="h2">Оплата прошла успешно</h2>
+<p class="payment-order-number" id="receipt-number"></p><p class="payment-demo-note">Демонстрационная оплата. Деньги не списывались, заказ в кафе не отправлен.</p>
+<div class="payment-receipt"><dl><div><dt>Имя</dt><dd id="receipt-name"></dd></div><div><dt>Получение</dt><dd id="receipt-delivery"></dd></div><div><dt>Адрес кафе</dt><dd id="receipt-address"></dd></div></dl><div id="receipt-items"></div><div class="sum-row total"><span>Оплачено (демо)</span><span id="receipt-total"></span></div></div>
+<a class="btn btn-gold" href="/Home/Menu">Вернуться в меню</a>
+</section></div></section>

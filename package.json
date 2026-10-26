@@ -12,7 +12,7 @@
   "scripts": {
     "build": "node scripts/build-frontend.mjs",
     "preview": "node scripts/preview-demo.mjs",
-    "test": "node --test scripts/demo-policy.test.mjs",
+    "test": "node --test scripts/demo-policy.test.mjs scripts/checkout-privacy.test.mjs",
     "verify": "node scripts/verify-demo.mjs"
   }
 }

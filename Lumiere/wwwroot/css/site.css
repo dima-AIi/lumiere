@@ -547,3 +547,28 @@ html.show-welcome .preloader{display:flex;}
 .demo-success{border:1px solid var(--line);background:var(--paper);padding:2.5rem;margin-top:2rem;}
 .demo-success p{margin:1.3rem 0 2rem;}
 [hidden]{display:none!important;}
+
+/* Checkout presentation. Identity stays in the current DOM only. */
+.checkout-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;margin-top:2.5rem;}
+.checkout-details{padding:1rem 0;}
+.checkout-details h2{margin-bottom:2rem;}
+.checkout-details label{display:block;margin:1.6rem 0 .65rem;font-size:.95rem;}
+.checkout-details input{display:block;width:100%;padding:1rem;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:inherit;border-radius:2px;}
+.checkout-details input:focus{outline:2px solid var(--gold);outline-offset:2px;}
+.checkout-details input[readonly]{background:var(--cream-2);color:var(--ink-soft);cursor:default;}
+.checkout-hint,.payment-demo-note{font-size:.8rem;line-height:1.7;color:var(--ink-soft);margin:.75rem 0 1rem;}
+.checkout-error{color:var(--danger);font-size:.85rem;margin-top:.6rem;}
+.checkout-details .demo-back{text-align:left;margin-top:2rem;}
+.checkout-layout .sum-row{gap:22px;}
+.checkout-layout .sum-row>span:last-child{white-space:nowrap;}
+.payment-success{max-width:760px;margin:0 auto;padding:1rem 0;text-align:center;scroll-margin-top:90px;}
+.payment-success-mark{display:grid;place-items:center;width:68px;height:68px;margin:0 auto 1.6rem;border-radius:50%;background:#e6eddf;color:#526c3d;font-size:2.2rem;}
+.payment-order-number{margin:1rem 0 .5rem;color:var(--ink-soft);}
+.payment-receipt{text-align:left;margin:2rem 0;padding:2rem;border:1px solid var(--line);background:var(--paper);}
+.payment-receipt dl{margin:0 0 1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--line);}
+.payment-receipt dl>div{display:grid;grid-template-columns:130px 1fr;gap:16px;margin-bottom:.7rem;}
+.payment-receipt dt{color:var(--ink-soft);}
+.payment-receipt dd{margin:0;overflow-wrap:anywhere;}
+.payment-receipt .sum-row{gap:20px;}
+.payment-receipt .sum-row>span:last-child{white-space:nowrap;}
+@media(max-width:700px){.checkout-layout{grid-template-columns:1fr;gap:1.5rem;}.payment-receipt{padding:1.3rem;}.payment-receipt dl>div{grid-template-columns:1fr;gap:3px;}.checkout-details{padding:0;}}
